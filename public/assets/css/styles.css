@@ -26,6 +26,9 @@ border:#ffc107 ;
  
 
   }
+  .main{
+    margin-top: 20px;
+  }
   .page-item.active .page-link {
     z-index: 3;
     color: #fff;

@@ -26,3 +26,19 @@ border:#ffc107 ;
  
 
   }
+  .page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color:  #ffc107;
+    border:solid 1px #ffc107 ;
+}
+.page-link {
+  position: relative;
+  display: block;
+  padding: .5rem .75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: black;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}

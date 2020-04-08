@@ -11,39 +11,70 @@
 
 <body>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="/__/firebase/7.9.3/firebase-app.js"></script>
+    <script src="/__/firebase/7.9.3/firebase-app.js"></script>
 
-<!-- TODO: Add SDKs for Firebase products that you want to use
+    <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
-<script src="/__/firebase/7.9.3/firebase-analytics.js"></script>
+    <script src="/__/firebase/7.9.3/firebase-analytics.js"></script>
 
-<!-- Initialize Firebase -->
-<script src="/__/firebase/init.js"></script>
+    <!-- Initialize Firebase -->
+    <script src="/__/firebase/init.js"></script>
     <div class="register-photo">
         <div class="form-container">
             <div class="image-holder" style="background-color: #333333;">
-                <div class="container "  >
+                <div class="container ">
                     <div class="row">
                         <div class="col d-flex flex-column align-items-center">
                             <h1 style="color: rgb(255,255,255);">Test online&nbsp;</h1>
-                            <p style="color: rgb(255,255,255);">En esta pagina realizaras un test para medir tu redimiento</p> <a href="Respuestas.html" class="btn btn-warning btn  text-white" type="submit"  >Ver Respuestas</a></div>
+                            <p style="color: rgb(255,255,255);">En esta pagina realizaras un test para medir tu
+                                redimiento</p> <!-- <a href="Respuestas.html" class="btn btn-warning btn  text-white"
+                                type="submit">Ver Respuestas</a> -->
+                        </div>
                     </div>
                 </div>
             </div>
-            <form  >
-                <h2 class="text-center"><strong>Log in&nbsp;</strong>&nbsp;Operador.</h2>
+            <form>
+                <h2 class="text-center"><strong>Iniciar Sesión&nbsp;</strong>&nbsp;Operador.</h2>
                 <div class="form-row">
                     <div class="col d-flex justify-content-center"><img class="img" src="assets/img/worker.png"></div>
                 </div>
-                <div class="form-group"><select class="form-control"><optgroup label="This is a group"><option value="12" selected="">Operador 1</option><option value="13">Operador 2</option><option value="14">Operador 3</option><option value="">Operador 4</option><option value="">Operador 5</option></optgroup></select></div>
-                <div
-                    class="form-group"><input class="form-control" type="password" name="password-repeat" placeholder="Password (repeat)"></div>
-        <div class="form-group">
-            <div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox">I agree to the license terms.</label></div>
+                <!-- <div class="form-group"><select class="form-control">
+                        <optgroup label="This is a group">
+                            <option value="12" selected="">Operador 1</option>
+                            <option value="13">Operador 2</option>
+                            <option value="14">Operador 3</option>
+                            <option value="">Operador 4</option>
+                            <option value="">Operador 5</option>
+                        </optgroup>
+                    </select>
+                </div> -->
+                <div class="form-group"><input class="form-control" type="text" name="username"
+                    placeholder="Usuario">
+                </div>
+                <div class="form-group"><input class="form-control" type="password" name="password-repeat"
+                        placeholder="Contraseña">
+                </div>
+                <!-- <div class="form-group">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox">
+                                
+                        </label>
+                    </div>
+                </div> -->
+
+                <div class="form-group">
+                    <a href="preguntas.html" class="btn btn-warning btn-block text-white"
+                        type="submit">Iniciar Sesión </a>
+                </div>
+                <a class="already" href="recoverPassword.html">
+                    Olvidaste tu contraseña? haz click aqui.
+                </a>
+                <a class="already" href="registrarse.html">
+                    No tienes cuenta? haz click aqui.
+                </a>
+            </form>
         </div>
-        
-        <div class="form-group"><a   href="preguntas.html" class="btn btn-warning btn-block text-white" type="submit"  >Log in </a></div><a class="already" href="#">You dont  already have an account? Sign up here.</a></form>
-    </div>
     </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

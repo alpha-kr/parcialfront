@@ -5,3 +5,24 @@
     width: 100px;
     margin-bottom: 10px;
   }
+  .fondo:checked~::before{
+    background-color: #ffc107 !important ;
+  }
+  .color1{
+    color: #ffc107 !important;
+  }
+  .color2{
+    color: white;
+  }
+  a.color2:hover{
+ color: white !important;
+  }
+  .perguntas{
+    margin: 10px;
+  }
+  .custom-control-input:checked~.custom-control-label::before {
+background-color:  #ffc107;
+border:#ffc107 ;
+ 
+
+  }

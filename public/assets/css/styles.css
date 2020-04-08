@@ -20,6 +20,9 @@
   .perguntas{
     margin: 10px;
   }
+  .fondo{
+    background-color: #ffc107 ;
+  }
   .custom-control-input:checked~.custom-control-label::before {
 background-color:  #ffc107;
 border:#ffc107 ;

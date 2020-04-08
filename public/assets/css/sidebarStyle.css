@@ -31,7 +31,7 @@ a:focus {
     min-width: 220px;
     max-width: 220px;
     min-height: 100vh;
-    background: #32373d;
+    background: #333333;
     color: #fff;
     -webkit-transition: all 0.3s;
     -o-transition: all 0.3s;

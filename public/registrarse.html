@@ -88,7 +88,7 @@ iv.	Imagen de la empresa
                     email invalido.
                   </div>
                 </div>
-                <div class="form-group"><input required  class="form-control" id="password" type="text" name="nombreEmp"
+                <div class="form-group"><input required  class="form-control"  type="text" name="nombreEmp"
                     placeholder="Nombre de la empresa">
                     <div class="valid-feedback">
                         Valido
@@ -122,7 +122,7 @@ iv.	Imagen de la empresa
                         ingrese numero valido.
                       </div>
                 </div>
-                <div class="form-group"><input required class="form-control" type="password" name="password"
+                <div class="form-group"><input required class="form-control" id="password" type="password" name="password"
                         placeholder="Contraseña">
                         <div class="valid-feedback">
                             Valido
@@ -155,8 +155,13 @@ iv.	Imagen de la empresa
         </div>
     </div>
     <script src="assets/js/jquery.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/app.js"></script>
+    
     <script>
         // Example starter JavaScript for disabling form submissions if there are invalid fields
         (function() {
@@ -170,6 +175,11 @@ iv.	Imagen de la empresa
                 if (form.checkValidity() === false) {
                   event.preventDefault();
                   event.stopPropagation();
+                }else{
+                  event.preventDefault();
+                  event.stopPropagation();
+                  registrar();
+
                 }
                 form.classList.add('was-validated');
               }, false);

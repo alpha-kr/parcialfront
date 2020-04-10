@@ -29,22 +29,9 @@
                 <div class="form-row">
                     <div class="col d-flex justify-content-center"><img class="img" src="assets/img/worker.png"></div>
                 </div>
-                <!-- 
-iv.	Imagen de la empresa
-
-                -->
-                <!-- <div class="form-group"><select class="form-control">
-                        <optgroup label="This is a group">
-                            <option value="12" selected="">Operador 1</option>
-                            <option value="13">Operador 2</option>
-                            <option value="14">Operador 3</option>
-                            <option value="">Operador 4</option>
-                            <option value="">Operador 5</option>
-                        </optgroup>
-                    </select>
-                </div> -->
                 
-                <div class="form-group"><input  required class="form-control" type="text" name="nombreRepLeg"
+                
+                <div class="form-group"><input  required class="form-control" type="text" id="nombreRepLeg" name="nombreRepLeg"
                     placeholder="Nombre del representante legal">
                     <div class="valid-feedback">
                         Valido
@@ -56,7 +43,7 @@ iv.	Imagen de la empresa
                 <div class="container">
                     <div class="row">
                         <div class="form-group">
-                            <select class="form-control">
+                            <select class="form-control" id="tipoD">
                                 <optgroup label="Tipo Documento.">
                                     <option value="cc">C.C</option>
                                     <option value="ti">T.I.</option>
@@ -66,7 +53,7 @@ iv.	Imagen de la empresa
                         
                         </div>
 
-                        <div class="form-group"><input required class="form-control" type="text" name="numDoc"
+                        <div class="form-group"><input required class="form-control" type="text" id="numDoc" name="numDoc"
                             placeholder="Numero de documento">
                             <div class="valid-feedback">
                                 Valido
@@ -79,7 +66,7 @@ iv.	Imagen de la empresa
                     </div>
                 </div>
                 
-                <div class="form-group"><input  required class="form-control" type="text" name="emailRepLeg"
+                <div class="form-group"><input  required class="form-control" type="text" id="email" name="emailRepLeg"
                    id="email" placeholder="Correo electrónico del representante legal">
                    <div class="valid-feedback">
                     Valido
@@ -88,7 +75,7 @@ iv.	Imagen de la empresa
                     email invalido.
                   </div>
                 </div>
-                <div class="form-group"><input required  class="form-control"  type="text" name="nombreEmp"
+                <div class="form-group"><input required  class="form-control"  type="text" id="nombreEmp" name="nombreEmp"
                     placeholder="Nombre de la empresa">
                     <div class="valid-feedback">
                         Valido
@@ -113,7 +100,7 @@ iv.	Imagen de la empresa
                     </div>
 
                 </div>
-                <div class="form-group"><input required class="form-control" type="phone" name="telRepLeg"
+                <div class="form-group"><input required class="form-control" type="phone" id="telRepLeg" name="telRepLeg"
                     placeholder="Teléfono del representante legal">
                     <div class="valid-feedback">
                         Valido
@@ -159,6 +146,7 @@ iv.	Imagen de la empresa
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-database.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/app.js"></script>
     

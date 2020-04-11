@@ -16,6 +16,7 @@
 </head>
 
 <body>
+    
     <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="background-color: #333333;">
         <div class="container">
             <a class="navbar-brand" href="#" style="color: rgba(255,255,255,0.9);">
@@ -42,6 +43,19 @@
 
 
     <div class="wrapper">
+        <div data-delay="1500" class="toast" style="position: absolute; top: 0; right: 0;">
+            <div class="toast-header">
+              <img src="assets/img/worker.png" style="width:20px; height: 20px;" class="rounded mr-2  w-10" alt="...">
+              <strong class="mr-auto">Operador Agregado</strong>
+              <small> succes 1 seg ago</small>
+              <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="toast-body">
+              Se agrego operado con exito.
+            </div>
+          </div>
 
 
         <!-- sidebar-->
@@ -74,48 +88,89 @@
                 </li>
             </ul>
         </nav>
-
+   
 
 
         <!-- hasta aqui-->
 
-        <div class="register-photo container d-flex justify-content-center" style="padding-top: 40px">
+        <div id="formulario" class="register-photo container d-flex justify-content-center" style="padding-top: 40px">
 
-        
-        <form >
+            
+        <form  class="needs-validation" novalidate>
             <h2 class="text-center"><strong>Crear&nbsp;</strong>&nbsp;Operador.</h2>
 
-            <div class="form-group"><input class="form-control" type="text" name="nombreRepLeg"
+            <div class="form-group"><input required class="form-control" type="text" id="nombreRepLeg" name="nombreRepLeg"
                 placeholder="Nombre(s) y apellido(s)">
+                <div class="valid-feedback">
+                    
+                  </div>
+                  <div class="invalid-feedback">
+                    debe ingresar nombre y apellido
+                  </div>
             </div>
+            <div class="valid-feedback">
+                 
+              </div>
+              <div class="invalid-feedback">
+                Ingrese Nombre y apellido.
+              </div>
+            <div class="form-group"><input  required class="form-control" type="email" id="email" name="nombreRepLeg"
+                placeholder=" inegrese email">
+                <div class="valid-feedback">
+                   
+                  </div>
+                  <div class="invalid-feedback">
+                    Ingrese formato de email valido
+                  </div>
+            </div>
+            
 
             <div class="container form-group">
                 <div class="row">
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="customFileLang" lang="es">
-                        <label class="custom-file-label form-control" for="customFileLang">Seleccionar Imagen</label>
+                        <input  required type="file" accept="image/gif,image/jpeg,image/jpg,image/png"  class="custom-file-input" id="file" lang="es">
+                        <label class="custom-file-label form-control" for="customFileLang">Seleccionar </label>
+                      </div>
+                      <div class="valid-feedback">
+                      
+                      </div>
+                      <div class="invalid-feedback">
+                        Debe selecionar un archivo Imagen debe ser formato gif,jpeg ,jpg,png
                       </div>
 
                 </div>
 
             </div>
-            <div class="form-group"><input class="form-control" type="text" name="telRepLeg"
+            <div class="form-group"><input required class="form-control" type="text" id="direccion"
                 placeholder="Dirección">
+                <div class="valid-feedback">
+                    
+                  </div>
+                  <div class="invalid-feedback">
+                    Debe ingresar direccion
+                  </div>
             </div>
-            <div class="form-group"><input class="form-control" type="password" name="password"
+            <div class="form-group"><input required
+                 minlength="6"class="form-control" id="password" type="password" name="password"
                     placeholder="Contraseña">
+                    <div class="valid-feedback">
+                      
+                      </div>
+                      <div class="invalid-feedback">
+                        Debe ingresar Contraseña de minimo 6 caracteres
+                      </div>
             </div>
 
             <div class="form-group">
-                <a href="#" class="btn btn-warning btn-block text-white"
+                <button  class="btn btn-warning btn-block text-white"
                     type="submit">Crear 
-                </a>
+            </button>
             </div>
         </form>
     </div>
 
     </div>
-
+   
 
 
 
@@ -154,7 +209,41 @@
         </footer>
     </div>
     <script src="assets/js/jquery.min.js"></script>
+
+ 
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-storage.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script>
+
+        (function() {
+                  'use strict';
+                  window.addEventListener('load', function() {
+                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                    var forms = document.getElementsByClassName('needs-validation');
+                    // Loop over them and prevent submission
+                    var validation = Array.prototype.filter.call(forms, function(form) {
+                      form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                          event.preventDefault();
+                          event.stopPropagation();
+                        }else{
+                          event.preventDefault();
+                          event.stopPropagation();
+                          crearoperadores(event);
+                          form.classList.add('was-validated');
+        
+                        }
+                        form.classList.add('was-validated');
+                      }, false);
+                    });
+                  }, false);
+                })();
+            </script>
 </body>
 
 </html>

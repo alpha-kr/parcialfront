@@ -16,7 +16,7 @@ firebase.analytics();
 function registrar() {
   email = $("#email").val();
   password = $("#password").val();
-  console.log(password);
+  
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(function (user) {
       firebase.auth().signInWithEmailAndPassword(email, password)
@@ -77,6 +77,67 @@ function session() {
     }
   });
 }
+function crearoperadores(evt) {
+  var files = evt.target.file;
+  email = $("#email").val();
+  password = $("#password").val();
+  let extension=files.files[0].name.split('.');
+  
+ 
+  
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+  .then(function(){
+   
+     
+     
+    if (firebase.auth().currentUser.uid) {
+      console.log("hola")
+     
+    var storage=firebase.storage().ref('img/'+firebase.auth().currentUser.uid+'.'+extension);
+      storage.put(files.files[0]);
+   
+    
+     firebase.database().ref("usuarios/" + firebase.auth().currentUser.uid).set({
+        "Nombre": $("#nombreRepLeg").val(), 
+        "direccion":$("#direccion").val(),
+        "tipoUser": false, 
+    }).then(function () {
+       
+       $('.toast').toast('show');
+       window.setInterval(function () {
+        window.location="crearEditarOperador.html";
+       }, 2300);
+       
+
+   
+       
+
+    }).catch(
+      function(error){
+
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(errorCode);
+        console.log(errorMessage);
+    
+      }
+    ) ;
+    }   
+  })
+  .catch( function(error){
+
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    console.log(errorCode);
+    console.log(errorMessage);
+
+  })
+ 
+  }
+ 
+  
+  
+
 
 function iniciarSesion() {
   email = $("#email").val();

@@ -147,6 +147,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-storage.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/app.js"></script>
     
@@ -166,7 +167,7 @@
                 }else{
                   event.preventDefault();
                   event.stopPropagation();
-                  registrar();
+                  registrar(event);
 
                 }
                 form.classList.add('was-validated');

@@ -16,7 +16,7 @@ firebase.analytics();
 function registrar(evt) {
   email = $("#email").val();
   password = $("#password").val();
-  let extension=evt.target[5].files[0].name.split('.');
+  let extension=evt.target[5].files[0].name.split('.')[1];
 
   
   firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -29,7 +29,7 @@ function registrar(evt) {
           var user = firebase.auth().currentUser;
 
           user.sendEmailVerification().then(function () {
-            // window.location = "admin.html";
+            window.location = "admin.html";
             // Email sent.
           }).catch(function (error) {
             var errorCode = error.code;

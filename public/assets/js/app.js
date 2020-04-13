@@ -13,12 +13,15 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
-function registrar() {
+function registrar(evt) {
   email = $("#email").val();
   password = $("#password").val();
+  let extension=evt.target[5].files[0].name.split('.');
+
   
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(function (user) {
+      
       firebase.auth().signInWithEmailAndPassword(email, password)
 
         .then(function () {
@@ -26,7 +29,7 @@ function registrar() {
           var user = firebase.auth().currentUser;
 
           user.sendEmailVerification().then(function () {
-            window.location = "admin.html";
+            // window.location = "admin.html";
             // Email sent.
           }).catch(function (error) {
             var errorCode = error.code;
@@ -43,6 +46,8 @@ function registrar() {
 
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
+              var storage=firebase.storage().ref('img/'+firebase.auth().currentUser.uid+'.'+extension);
+              storage.put(evt.target[5].files[0]);
               uid = firebase.auth().currentUser.uid;
               
               firebase.database().ref("usuarios/" + uid).set({
@@ -143,12 +148,8 @@ function crearoperadores(evt) {
 
   })
  
-  }
+}
  
-  
-  
-
-
 function iniciarSesion() {
   email = $("#email").val();
   password = $("#password").val();
@@ -191,7 +192,7 @@ function operadores() {
   var userId = localStorage.uid;
   if (userId) {
     return firebase.database().ref('usuarios/' + userId+'/Operadores').once('value',function(snapshot) {
-  
+      let cont = 0;
       snapshot.forEach(function(childSnapshot) {
          
         var childKey = childSnapshot.key;
@@ -210,8 +211,8 @@ function operadores() {
           <img class="img  mx-auto d-block" style="margin-top: 5px;" src="assets/img/worker.png">
           <div class="card-body ">
               <div class="custom-control custom-radio" style="margin-left: 3px;">
-                  <input type="checkbox" ${ check =sw?'checked':''} id="customRadio1" name="customRadio" class="custom-control-input">
-                  <label class="custom-control-label fondo" for="customRadio1">habilitado</label>
+                  <input type="checkbox" ${ check =sw?'checked':''} id="customRadio${cont}" name="customRadio${cont}" class="custom-control-input">
+                  <label class="custom-control-label fondo" for="customRadio${cont}">habilitado</label>
               </div>
               <h5 class="card-title text-center text-justify">${childData.Nombre}</h5>
               <p class="card-text text-center text-justify" style="text-overflow: ellipsis;">${childData.direccion} </p>
@@ -220,11 +221,11 @@ function operadores() {
           
           
           `
-
+          cont +=1;
         });
         
        
-
+        
         // ...
       });
 

@@ -51,6 +51,7 @@ function registrar() {
                   "Telefono": $("#telRepLeg").val(), 
                   "documento": $("#numDoc").val(), 
                   "tipoD": $("#tipoD").val(), 
+                  "Operadores":"lista de operadores",
                   "tipoUser": true, 
               });
           } 
@@ -101,6 +102,7 @@ function crearoperadores(evt) {
         "Nombre": $("#nombreRepLeg").val(), 
         "direccion":$("#direccion").val(),
         "tipoUser": false, 
+        "habilitado":true
     }).then(function () {
        
        $('.toast').toast('show');
@@ -122,6 +124,13 @@ function crearoperadores(evt) {
     
       }
     ) ;
+    firebase.database().ref("usuarios/" + localStorage.uid+"/Operadores").push().set(
+      {
+        "Nombre": $("#nombreRepLeg").val(), 
+        "direccion":$("#direccion").val(),
+        "UID":firebase.auth().currentUser.uid
+      }
+    );
     }   
   })
   .catch( function(error){
@@ -176,6 +185,42 @@ function logout(params) {
   }).catch(function (error) {
     // An error happened.
   });
+}
+function operadores() {
+  var userId = localStorage.uid;
+  if (userId) {
+    return firebase.database().ref('usuarios/' + userId+'/Operadores').once('value',function(snapshot) {
+  
+      snapshot.forEach(function(childSnapshot) {
+         
+        var childKey = childSnapshot.key;
+        var childData = childSnapshot.val();
+        let body=document.getElementById('body');
+        body.innerHTML+=`
+        <div class="card d-flex justify-content-center"
+        style="width: 18rem;margin-top: 20px;margin-right: 20px;">
+        <img class="img  mx-auto d-block" style="margin-top: 5px;" src="assets/img/worker.png">
+        <div class="card-body ">
+            <div class="custom-control custom-radio" style="margin-left: 3px;">
+                <input type="checkbox" id="customRadio1" name="customRadio" class="custom-control-input">
+                <label class="custom-control-label fondo" for="customRadio1">habilitado</label>
+            </div>
+            <h5 class="card-title text-center text-justify">${childData.Nombre}</h5>
+            <p class="card-text text-center text-justify" style="text-overflow: ellipsis;">${childData.direccion} </p>
+        </div>
+    </div>
+        
+        
+        `
+
+        // ...
+      });
+
+      // ...
+    })
+   
+  }
+
 }
 // session();
 

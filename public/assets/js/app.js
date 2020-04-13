@@ -82,7 +82,7 @@ function crearoperadores(evt) {
   var files = evt.target.file;
   email = $("#email").val();
   password = $("#password").val();
-  let extension=files.files[0].name.split('.');
+  let extension=files.files[0].name.split('.')[1];
   
  
   
@@ -92,7 +92,7 @@ function crearoperadores(evt) {
      
      
     if (firebase.auth().currentUser.uid) {
-      console.log("hola")
+    
      
     var storage=firebase.storage().ref('img/'+firebase.auth().currentUser.uid+'.'+extension);
       storage.put(files.files[0]);
@@ -102,7 +102,8 @@ function crearoperadores(evt) {
         "Nombre": $("#nombreRepLeg").val(), 
         "direccion":$("#direccion").val(),
         "tipoUser": false, 
-        "habilitado":true
+        "habilitado":true,
+        "extension":extension
     }).then(function () {
        
        $('.toast').toast('show');
@@ -199,11 +200,15 @@ function operadores() {
         let body=document.getElementById('body');
         let sw;
         let check='';
+        let extension='';
         firebase.database().ref("usuarios/" + childData.UID).once('value' , function (snapshot){
           sw=snapshot.val().habilitado;
+          extension=snapshot.val().extension;
           console.log(sw);
 
         }).then(function(){
+          storageRef.child('img/'+childData.UID+extension).getDownloadURL().then(function(url) { console.log(url)});
+
           body.innerHTML+=`
           <div class="card d-flex justify-content-center"
           style="width: 18rem;margin-top: 20px;margin-right: 20px;">

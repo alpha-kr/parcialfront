@@ -131,6 +131,7 @@ function crearoperadores(evt) {
         "UID":firebase.auth().currentUser.uid
       }
     );
+    
     }   
   })
   .catch( function(error){
@@ -196,22 +197,33 @@ function operadores() {
         var childKey = childSnapshot.key;
         var childData = childSnapshot.val();
         let body=document.getElementById('body');
-        body.innerHTML+=`
-        <div class="card d-flex justify-content-center"
-        style="width: 18rem;margin-top: 20px;margin-right: 20px;">
-        <img class="img  mx-auto d-block" style="margin-top: 5px;" src="assets/img/worker.png">
-        <div class="card-body ">
-            <div class="custom-control custom-radio" style="margin-left: 3px;">
-                <input type="checkbox" id="customRadio1" name="customRadio" class="custom-control-input">
-                <label class="custom-control-label fondo" for="customRadio1">habilitado</label>
-            </div>
-            <h5 class="card-title text-center text-justify">${childData.Nombre}</h5>
-            <p class="card-text text-center text-justify" style="text-overflow: ellipsis;">${childData.direccion} </p>
-        </div>
-    </div>
+        let sw;
+        let check='';
+        firebase.database().ref("usuarios/" + childData.UID).once('value' , function (snapshot){
+          sw=snapshot.val().habilitado;
+          console.log(sw);
+
+        }).then(function(){
+          body.innerHTML+=`
+          <div class="card d-flex justify-content-center"
+          style="width: 18rem;margin-top: 20px;margin-right: 20px;">
+          <img class="img  mx-auto d-block" style="margin-top: 5px;" src="assets/img/worker.png">
+          <div class="card-body ">
+              <div class="custom-control custom-radio" style="margin-left: 3px;">
+                  <input type="checkbox" ${ check =sw?'checked':''} id="customRadio1" name="customRadio" class="custom-control-input">
+                  <label class="custom-control-label fondo" for="customRadio1">habilitado</label>
+              </div>
+              <h5 class="card-title text-center text-justify">${childData.Nombre}</h5>
+              <p class="card-text text-center text-justify" style="text-overflow: ellipsis;">${childData.direccion} </p>
+          </div>
+      </div>
+          
+          
+          `
+
+        });
         
-        
-        `
+       
 
         // ...
       });

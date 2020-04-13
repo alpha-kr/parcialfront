@@ -202,18 +202,19 @@ function operadores() {
         let sw;
         let check='';
         let extension='';
+        let src='';
         firebase.database().ref("usuarios/" + childData.UID).once('value' , function (snapshot){
           sw=snapshot.val().habilitado;
           extension=snapshot.val().extension;
           console.log(sw);
 
         }).then(function(){
-          storageRef.child('img/'+childData.UID+extension).getDownloadURL().then(function(url) { console.log(url)});
-
+       firebase.storage().ref('img/').child(childData.UID+'.'+extension).getDownloadURL().then(function(url) { console.log(url)
+          src="'"+url+"'";
           body.innerHTML+=`
           <div class="card d-flex justify-content-center"
           style="width: 18rem;margin-top: 20px;margin-right: 20px;">
-          <img class="img  mx-auto d-block" style="margin-top: 5px;" src="assets/img/worker.png">
+          <img class="img  mx-auto d-block" style="margin-top: 5px;" src=${src}>
           <div class="card-body ">
               <div class="custom-control custom-radio" style="margin-left: 3px;">
                   <input type="checkbox" ${ check =sw?'checked':''} id="customRadio${cont}" name="customRadio${cont}" class="custom-control-input">
@@ -227,6 +228,13 @@ function operadores() {
           
           `
           cont +=1;
+          }).catch(
+            function (){
+              src='assets/img/worker.png';
+            }
+          );
+
+          
         });
         
        

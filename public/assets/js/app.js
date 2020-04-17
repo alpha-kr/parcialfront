@@ -96,55 +96,66 @@ function crearoperadores(evt) {
 
 
   firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(function () {
+  .then(function(){
+   
+     
+     
+    if (firebase.auth().currentUser.uid) {
+    
+     
+    var storage=firebase.storage().ref('img/'+firebase.auth().currentUser.uid+'.'+extension);
+      storage.put(files.files[0]).then(
+function(){
+  firebase.database().ref("usuarios/" + firebase.auth().currentUser.uid).set({
+    "Nombre": $("#nombreRepLeg").val(), 
+    "direccion":$("#direccion").val(),
+    "tipoUser": false, 
+    "habilitado":true,
+    "extension":extension
+}).then(function () {
+   
+   $('.toast').toast('show');
+   window.setInterval(function () {
+    window.location="crearEditarOperador.html";
+   }, 2300);
+   
 
 
+   
 
-      if (firebase.auth().currentUser.uid) {
+}).catch(
+  function(error){
 
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    console.log(errorCode);
+    console.log(errorMessage);
 
-        var storage = firebase.storage().ref('img/' + firebase.auth().currentUser.uid + '.' + extension);
-        storage.put(files.files[0]);
+  }
+) ;
+firebase.database().ref("usuarios/" + localStorage.uid+"/Operadores").push().set(
+  {
+    "Nombre": $("#nombreRepLeg").val(), 
+    "direccion":$("#direccion").val(),
+    "UID":firebase.auth().currentUser.uid
+  }
+);
 
+}
 
-        firebase.database().ref("usuarios/" + firebase.auth().currentUser.uid).set({
-          "Nombre": $("#nombreRepLeg").val(),
-          "direccion": $("#direccion").val(),
-          "tipoUser": false,
-          "habilitado": true,
-          "extension": extension
-        }).then(function () {
-
-          $('.toast').toast('show');
-          window.setInterval(function () {
-            window.location = "crearEditarOperador.html";
-          }, 2300);
-
-
-
-
-
-        }).catch(
-          function (error) {
-
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(errorCode);
-            console.log(errorMessage);
-
-          }
-        );
-        firebase.database().ref("usuarios/" + localStorage.uid + "/Operadores").push().set(
-          {
-            "Nombre": $("#nombreRepLeg").val(),
-            "direccion": $("#direccion").val(),
-            "UID": firebase.auth().currentUser.uid
-          }
-        );
-
-      }
-    })
-    .catch(function (error) {
+      )
+      .catch( function (error){
+        var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorCode);
+      console.log(errorMessage);
+      });
+   
+    
+     
+    }   
+  })
+  .catch( function(error){
 
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -214,14 +225,13 @@ function operadores() {
         var childData = childSnapshot.val();
         let body = document.getElementById('body');
         let sw;
-        let check = '';
-        let extension = '';
-        let src = '';
-
-        firebase.database().ref("usuarios/" + childData.UID).once('value', function (snapshot) {
-          sw = snapshot.val().habilitado;
-          extension = snapshot.val().extension;
-          console.log(sw);
+        let check='';
+        let extension='';
+        let src='';
+        firebase.database().ref("usuarios/" + childData.UID).once('value' , function (snapshot){
+          sw=snapshot.val().habilitado;
+          extension=snapshot.val().extension;
+          console.log(extension);
 
         }).then(function () {
           firebase.storage().ref('img/').child(childData.UID + '.' + extension).getDownloadURL().then(function (url) {

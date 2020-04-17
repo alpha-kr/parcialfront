@@ -29,6 +29,8 @@
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav mr-auto"></ul>
                 <span class="navbar-text actions">
+                    <a onclick="preguntas()" class="btn btn-light action-button" role="button"
+                        style="background-color: #ffc107;">Guardar</a>
                     <a class="btn btn-light action-button" role="button" href="#" style="background-color: #ffc107;">
                         Admin
                     </a>
@@ -80,9 +82,11 @@
 
         <!-- hasta aqui-->
 
-
+        
         <div class="container">
+            <div id="error">
 
+            </div>
 
 
             <div class="row d-flex justify-content-center" style="flex: wrap;">
@@ -92,12 +96,12 @@
 <div class="card d-flex justify-content-center"
     style="margin-top: 20px;margin-right: 20px; padding: 15px;">
 
-    <div class="form-group">
+    <div class="form-group" id="d1">
         <label for="exampleInputEmail1">Pregunta numero:1</label>
         <div class="form-inline">
 
-            <input type="text" placeholder="Ingrese enunciado de la pregunta"
-                class="form-control  "><button class="btn btn-warning" onclick="agregar('p1')"> agregar opcion<i
+            <input type="text" id="e1" placeholder="Ingrese enunciado de la pregunta"
+                class="form-control  "><button class="btn btn-warning" onclick="agregar('p1', 'd1')"> agregar opcion<i
                     class="fas fa-plus"></i></button>
         </div>
 
@@ -113,12 +117,12 @@
 <div class="card d-flex justify-content-center"
     style="margin-top: 20px;margin-right: 20px; padding: 15px;">
 
-    <div class="form-group">
+    <div class="form-group" id="d2">
         <label for="exampleInputEmail1">Pregunta numero:2</label>
         <div class="form-inline">
 
-            <input type="text" placeholder="Ingrese enunciado de la pregunta"
-                class="form-control  "><button class="btn btn-warning" onclick="agregar('p2')"> agregar opcion<i
+            <input type="text" id="e2" placeholder="Ingrese enunciado de la pregunta"
+                class="form-control  "><button class="btn btn-warning" onclick="agregar('p2', 'd2')"> agregar opcion<i
                     class="fas fa-plus"></i></button>
         </div>
 
@@ -134,12 +138,12 @@
 <div class="card d-flex justify-content-center"
     style="margin-top: 20px;margin-right: 20px; padding: 15px;">
 
-    <div class="form-group">
+    <div class="form-group" id="d3">
         <label for="exampleInputEmail1">Pregunta numero:3</label>
         <div class="form-inline">
 
-            <input type="text" placeholder="Ingrese enunciado de la pregunta"
-                class="form-control  "><button class="btn btn-warning" onclick="agregar('p3')"> agregar opcion<i
+            <input type="text" id="e3" placeholder="Ingrese enunciado de la pregunta"
+                class="form-control  "><button class="btn btn-warning" onclick="agregar('p3','d3')"> agregar opcion<i
                     class="fas fa-plus"></i></button>
         </div>
 
@@ -155,12 +159,12 @@
 <div class="card d-flex justify-content-center"
 style="margin-top: 20px;margin-right: 20px; padding: 15px;">
 
-<div class="form-group">
+<div class="form-group" id="d4">
     <label for="exampleInputEmail1">Pregunta numero:4</label>
     <div class="form-inline">
 
-        <input type="text" placeholder="Ingrese enunciado de la pregunta"
-            class="form-control  "><button class="btn btn-warning" onclick="agregar('p4')"> agregar opcion<i
+        <input type="text" id="e4" placeholder="Ingrese enunciado de la pregunta"
+            class="form-control  "><button class="btn btn-warning" onclick="agregar('p4','d4')"> agregar opcion<i
                 class="fas fa-plus"></i></button>
     </div>
 
@@ -176,12 +180,12 @@ style="margin-top: 20px;margin-right: 20px; padding: 15px;">
     <div class="card d-flex justify-content-center"
     style="margin-top: 20px;margin-right: 20px; padding: 15px;">
 
-    <div class="form-group">
+    <div class="form-group" id="d5">
         <label for="exampleInputEmail1">Pregunta numero:5</label>
         <div class="form-inline">
 
-            <input type="text" placeholder="Ingrese enunciado de la pregunta"
-                class="form-control  "><button class="btn btn-warning" onclick="agregar('p5')"> agregar opcion<i
+            <input type="text" id="e5" placeholder="Ingrese enunciado de la pregunta"
+                class="form-control  "><button class="btn btn-warning" onclick="agregar('p5','d5')"> agregar opcion<i
                     class="fas fa-plus"></i></button>
         </div>
 
@@ -245,17 +249,25 @@ style="margin-top: 20px;margin-right: 20px; padding: 15px;">
         </footer>
     </div>
     <script src="assets/js/jquery.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-storage.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/app.js"></script>
     <script>
-        function agregar(pregunta){
+        function agregar(pregunta,div){
             var Div=document.getElementById(pregunta);
+            const size = $('#' + div + ' ul li').length;
             Div.innerHTML+=`
           
                 <li class="list-group-item" >
                     <div class="form-inline">
 
-                        <input type="text" placeholder="Ingrese Opcion de respuesta" class="form-control mr-3  w-65">
-                        <input type="text" placeholder="puntaje" class="form-control w-25">
+                        <input type="text" id=${pregunta}r${size} placeholder="Ingrese Opcion de respuesta" class="form-control mr-3  w-65">
+                        <input type="text" id=${pregunta}v${size} placeholder="puntaje" class="form-control w-25">
                         <button class="btn btn-danger ml-3" onclick="quitar(this)"><i class="fas fa-minus-circle"></i></button>
                     </div>
 

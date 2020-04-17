@@ -96,66 +96,66 @@ function crearoperadores(evt) {
 
 
   firebase.auth().createUserWithEmailAndPassword(email, password)
-  .then(function(){
-   
-     
-     
-    if (firebase.auth().currentUser.uid) {
-    
-     
-    var storage=firebase.storage().ref('img/'+firebase.auth().currentUser.uid+'.'+extension);
-      storage.put(files.files[0]).then(
-function(){
-  firebase.database().ref("usuarios/" + firebase.auth().currentUser.uid).set({
-    "Nombre": $("#nombreRepLeg").val(), 
-    "direccion":$("#direccion").val(),
-    "tipoUser": false, 
-    "habilitado":true,
-    "extension":extension
-}).then(function () {
-   
-   $('.toast').toast('show');
-   window.setInterval(function () {
-    window.location="crearEditarOperador.html";
-   }, 2300);
-   
+    .then(function () {
 
 
-   
 
-}).catch(
-  function(error){
+      if (firebase.auth().currentUser.uid) {
 
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    console.log(errorCode);
-    console.log(errorMessage);
 
-  }
-) ;
-firebase.database().ref("usuarios/" + localStorage.uid+"/Operadores").push().set(
-  {
-    "Nombre": $("#nombreRepLeg").val(), 
-    "direccion":$("#direccion").val(),
-    "UID":firebase.auth().currentUser.uid
-  }
-);
+        var storage = firebase.storage().ref('img/' + firebase.auth().currentUser.uid + '.' + extension);
+        storage.put(files.files[0]).then(
+          function () {
+            firebase.database().ref("usuarios/" + firebase.auth().currentUser.uid).set({
+              "Nombre": $("#nombreRepLeg").val(),
+              "direccion": $("#direccion").val(),
+              "tipoUser": false,
+              "habilitado": true,
+              "extension": extension
+            }).then(function () {
 
-}
+              $('.toast').toast('show');
+              window.setInterval(function () {
+                window.location = "crearEditarOperador.html";
+              }, 2300);
 
-      )
-      .catch( function (error){
-        var errorCode = error.code;
-      var errorMessage = error.message;
-      console.log(errorCode);
-      console.log(errorMessage);
-      });
-   
-    
-     
-    }   
-  })
-  .catch( function(error){
+
+
+
+
+            }).catch(
+              function (error) {
+
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.log(errorCode);
+                console.log(errorMessage);
+
+              }
+            );
+            firebase.database().ref("usuarios/" + localStorage.uid + "/Operadores").push().set(
+              {
+                "Nombre": $("#nombreRepLeg").val(),
+                "direccion": $("#direccion").val(),
+                "UID": firebase.auth().currentUser.uid
+              }
+            );
+
+          }
+
+        )
+          .catch(function (error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(errorCode);
+            console.log(errorMessage);
+          });
+
+
+
+      }
+    })
+    .catch(function (error) {
 
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -225,12 +225,12 @@ function operadores() {
         var childData = childSnapshot.val();
         let body = document.getElementById('body');
         let sw;
-        let check='';
-        let extension='';
-        let src='';
-        firebase.database().ref("usuarios/" + childData.UID).once('value' , function (snapshot){
-          sw=snapshot.val().habilitado;
-          extension=snapshot.val().extension;
+        let check = '';
+        let extension = '';
+        let src = '';
+        firebase.database().ref("usuarios/" + childData.UID).once('value', function (snapshot) {
+          sw = snapshot.val().habilitado;
+          extension = snapshot.val().extension;
           console.log(extension);
 
         }).then(function () {
@@ -282,10 +282,85 @@ function changeStatus(div) {
   firebase.database().ref("usuarios/" + id).once('value', function (snapshot) {
     hab = !snapshot.val().habilitado;
   }).then(function () {
-      firebase.database().ref("usuarios/" + id).update({ habilitado: hab })
-    }
+    firebase.database().ref("usuarios/" + id).update({ habilitado: hab })
+  }
   );
 }
+
+function validarPregunta(pregunta) {
+  const size = $('#d' + pregunta + ' ul li').length
+  let errores = [];
+  if (document.getElementById('e' + pregunta).value === '') {
+    errores.push('enunciado vacio pregunta' + pregunta);
+  }
+  if (size === 0) {
+
+    errores.push('pregunta' + pregunta + ' sin posibles respuestas');
+  }
+  for (let i = 0; i < size; i++) {
+    if (document.getElementById('p' + pregunta + 'r' + i).value === '') {
+      errores.push('pregunta' + pregunta + ' tiene una respuesta vacia');
+    }
+
+    if (document.getElementById('p' + pregunta + 'v' + i).value === '') {
+      errores.push('pregunta' + pregunta + ' tiene un puntaje vacio');
+    }
+  }
+
+  console.log(errores);
+  return errores;
+}
+
+function preguntas() {
+  let errores = [];
+  for (let k = 1; k <= 5; k++) {
+    errores.push(validarPregunta(k));
+  }
+  if (errores.length > 0 ) {
+    let Div=document.getElementById('error');
+    Div.innerHTML = '';
+    let stringError = `
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Advertencia!</strong> El cuestionario contiene algunos errores.
+        
+
+    `;
+  
+    for (let e = 0; e < errores.length; e++) {
+      stringError+= `
+          <p>- ${errores[e]} </p>
+          
+        `;
+      
+    }
+  
+    stringError += ` 
+    <button type="button" style="color: black;" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    
+    `;
+    Div.innerHTML += stringError;
+  } else {
+    for (let i = 1; i <= 5; i++) {
+      let enunciado = document.getElementById('e' + i).value;
+      let preguntasSize = $('#d' + i + ' ul li').length;
+      firebase.database().ref('usuarios/' + localStorage.uid + '/cuestionario/pregunta' + i).set({
+        'enunciado': enunciado
+      });
+      for (let j = 0; j < preguntasSize; j++) {
+        let resp = document.getElementById('p' + i + 'r' + j);
+        let valor = document.getElementById('p' + i + 'v' + j);
+        firebase.database().ref('usuarios/' + localStorage.uid + '/cuestionario/pregunta' + i).push().set({
+          'respuesta': resp.value,
+          'valor': valor.value,
+        });
+      }
+    }
+  }
+}
+
 
 
 // session();

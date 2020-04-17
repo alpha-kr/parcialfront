@@ -21,57 +21,9 @@
                 <ul class="nav navbar-nav mr-auto"></ul><span class="navbar-text actions"> <a class="btn btn-light action-button" role="button" href="#" style="background-color: #ffc107;">Operador numero #</a> <a class="btn btn-light action-button" href="index.html" role="button" href="#" style="background-color: gray;">Salir</a></span></div>
         </div>
     </nav>
-    <div class="container main center">
+    <div id="body" class="container main center">
         
-        <div class="center">
-            <div class="jumbotron jumbotron-fluid">
-                <div class="container">
-                  <h1 class="display-4 color1">Responda cuidadosa mente</h1>
-                  <p class="lead"> Por que cree usted que josue es marica selecione solo una respuesta.</p>
-                </div>
-              </div>          
-
-        </div>
-        <div class="perguntas">
-        <ul class="list-group">
-            <li class="list-group-item">
-                <div class="custom-control custom-radio">
-                    <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
-                    <label class="custom-control-label fondo" for="customRadio1">Nacio caga</label>
-                  </div>
-                  
-            </li>
-            <li class="list-group-item">
-                <div class="custom-control custom-radio">
-                    <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
-                    <label class="custom-control-label fondo" for="customRadio2">Nacio caga</label>
-                  </div>
-                  
-            </li>
-           
-
-        </ul>
-    </div>
-    
-         
-        <div class="d-flex justify-content-center">
-            <nav  class=" center" aria-label="...">
-                <ul class="pagination">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item active" aria-current="page">
-                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                  </li>
-                </ul>
-              </nav>
-        </div>
-   
+       
     </div>
                 
             
@@ -111,7 +63,134 @@
         </footer>
     </div>
     <script src="assets/js/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+ 
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-storage.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/app.js"></script>
+<script>
+    var body=document.getElementById('body');
+    var pagina=0;
+     var userId=localStorage.uid;
+     var screen=[]
+   
+    firebase.database().ref('usuarios/' + userId).on('value', function (snapshot) {
+        let empresa=snapshot.val().empresa;
+       
+       firebase.database().ref('usuarios/'+empresa).on('value',function (snapshot){
+           
+            if (snapshot.val().cuestionario) {
+                var cuestionario=snapshot.val().cuestionario;
+                
+                console.log(cuestionario.pregunta2);
+                console.log();
+                for (const pregunta in cuestionario) {
+                   
+                    let enu=`
+                    <div class="center">
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                  <h1 class="display-4 color1">Responda cuidadosa mente</h1>
+                  <p class="lead"> ${cuestionario[''+pregunta+''].enunciado}</p>
+                </div>
+              </div>          
+
+        </div>`;
+            let pregu='';
+        for (const key in cuestionario[''+pregunta+'']) {
+             
+             if (key!='enunciado') {
+                  pregu+=`
+                
+                
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
+                            <label class="custom-control-label fondo" for="customRadio1">${cuestionario[''+pregunta+''][''+key+''].respuesta}</label>
+                          </div>
+                          
+                    </li>
+                   
+                </ul>
+            
+                        
+                        `;
+             }
+             
+        }
+        
+             
+       
+                    screen.push(enu+"<div class='preguntas'>"+pregu+"</div>");
+                
+             
+                }
+                 
+                       
+                
+               
+
+                
+                body.innerHTML=screen[pagina]+paginator(pagina);
+                
+            }else{
+                let body=document.getElementById('body');
+               body.innerHTML="<p>Aun no tienes un test disponible</p>" 
+            }
+       }
+           
+       );
+
+      
+    });
+    function right(pag) {
+
+        
+    }
+    function left(params) {
+        
+    }
+    function pag(params) {
+        body.innerHTML=screen[params]+paginator(params);
+    }
+    function paginator(params) {
+        let check='';
+        let paginator=`
+           
+           <div class="d-flex justify-content-center">
+                  <nav  class=" center" aria-label="...">
+                      <ul class="pagination">
+                        <li class="page-item disabled">
+                          <button class="page-link"  >anterior</button>
+                        </li>
+                        <li class="page-item ${check=params==0?'active':''}"><a class="page-link"  onclick="pag(0)">1</a></li>
+                        <li class="page-item ${check=params==1?'active':''}" aria-current="page">
+                          <a class="page-link" onclick="pag(1)">2 <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="page-item ${check=params==2?'active':''}" ><a class="page-link"  onclick="pag(2)">3</a></li>
+                        <li class="page-item ${check=params==3?'active':''}" ><a class="page-link"  onclick="pag(3)">4</a></li>
+                        <li class="page-item ${check=params==4?'active':''}"><a class="page-link"  onclick="pag(4)">5</a></li>
+                        <li class="page-item">
+                          <button class="page-link"   >siguiente</button>
+                    
+                        </li>
+                      </ul>
+                    </nav>
+              </div>
+         
+                      
+                      `;
+                      return paginator;
+    }
+  
+</script>
 </body>
+
 
 </html>

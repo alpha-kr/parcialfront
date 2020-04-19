@@ -10,6 +10,10 @@
     <link rel="stylesheet" href="assets/css/Footer-Dark.css">
     <link rel="stylesheet" href="assets/css/Navigation-with-Button.css">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <script src=" https://code.jquery.com/jquery-3.5.0.min.js"></script>
+
+
+
     
 </head>
 
@@ -21,7 +25,15 @@
                 <ul class="nav navbar-nav mr-auto"></ul><span class="navbar-text actions"> <a class="btn btn-light action-button" role="button" href="#" style="background-color: #ffc107;">Operador numero #</a> <a class="btn btn-light action-button" href="index.html" role="button" href="#" style="background-color: gray;">Salir</a></span></div>
         </div>
     </nav>
+ 
     <div id="body" class="container main center">
+        <div id="progre"></div>
+         
+        <div id="enunciado"></div>
+        <div id="preguntas"></div>
+        <div id="paginator"></div>
+
+        
         
        
     </div>
@@ -62,7 +74,7 @@
             </div>
         </footer>
     </div>
-    <script src="assets/js/jquery.min.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
  
@@ -74,13 +86,29 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/app.js"></script>
 <script>
+ 
+    var p=0;
+    var prueba;
     var body=document.getElementById('body');
     var pagina=0;
+    var empresa;
+    var saved=[false,false,false,false,false];
+    var puntaje=[0,0,0,0,0];
+     
      var userId=localStorage.uid;
-     var screen=[]
-   
-    firebase.database().ref('usuarios/' + userId).on('value', function (snapshot) {
-        let empresa=snapshot.val().empresa;
+     var questions=[];
+     var statements=[];
+     var progre=document.getElementById('progre');
+     var progress=`
+    <div class="progress perguntas">
+            <div class="progress-bar bg-warning" role="progressbar" style="width: ${p}%;" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100">${p}%</div>
+          </div>
+    
+    `;
+    progre.innerHTML=progress;
+    function listar() {
+        firebase.database().ref('usuarios/' + userId).on('value', function (snapshot) {
+         empresa=snapshot.val().empresa;
        
        firebase.database().ref('usuarios/'+empresa).on('value',function (snapshot){
            
@@ -95,13 +123,14 @@
                     <div class="center">
             <div class="jumbotron jumbotron-fluid">
                 <div class="container">
-                  <h1 class="display-4 color1">Responda cuidadosa mente</h1>
-                  <p class="lead"> ${cuestionario[''+pregunta+''].enunciado}</p>
+                  <h1 class="display-4 color1"> ${cuestionario[''+pregunta+''].enunciado}</h1>
+                  <p class="lead">Responda cuidadosa mente</p>
                 </div>
               </div>          
 
         </div>`;
             let pregu='';
+            let cont=1;
         for (const key in cuestionario[''+pregunta+'']) {
              
              if (key!='enunciado') {
@@ -111,23 +140,24 @@
                 <ul class="list-group">
                     <li class="list-group-item">
                         <div class="custom-control custom-radio">
-                            <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
-                            <label class="custom-control-label fondo" for="customRadio1">${cuestionario[''+pregunta+''][''+key+''].respuesta}</label>
+                            <input value="${cuestionario[''+pregunta+''][''+key+''].valor}" type="radio" id="customRadio${cont}" name="customRadio" class="custom-control-input">
+                            <label class="custom-control-label " for="customRadio${cont}">${cuestionario[''+pregunta+''][''+key+''].respuesta}</label>
                           </div>
                           
                     </li>
                    
                 </ul>
+                
             
                         
                         `;
+                        cont++;
              }
              
         }
         
-             
-       
-                    screen.push(enu+"<div class='preguntas'>"+pregu+"</div>");
+                    questions.push("<div class='perguntas'>"+pregu+"</div>");
+                     statements.push(enu);
                 
              
                 }
@@ -136,12 +166,12 @@
                 
                
 
-                
-                body.innerHTML=screen[pagina]+paginator(pagina);
+                pag(pagina);
+                 
                 
             }else{
-                let body=document.getElementById('body');
-               body.innerHTML="<p>Aun no tienes un test disponible</p>" 
+                
+               body.innerHTML="<p>Aun no tienes un test disponible</p>" ;
             }
        }
            
@@ -149,45 +179,124 @@
 
       
     });
-    function right(pag) {
+   
+        return 1;
+    }
+   
+     function right() {
+       if (pagina+1<5) {
+           pag(pagina+1);
+           
+       }else{
+           if (acabo()){
+           let  punt=0.0
+           puntaje.forEach(value=>{(punt+=value)});
+           console.log(punt)
 
+            alert("su puntaje fue "+punt);
+            firebase.database().ref('usuarios/'+empresa+'/respuestas').set({
+         "operador":userId,
+         "respuestas": {"pregunta1":puntaje[0],"pregunta2":puntaje[1],"pregunta3":puntaje[2],"pregunta4":puntaje[3],"pregunta5":puntaje[4]}
+
+     });
+        }
+
+       }
         
     }
-    function left(params) {
+    function acabo() {
+        var sw=0;
+
+        saved.forEach(value=>{   (value)? sw+=1:0
+        console.log(sw)
+        }
         
+        );
+        if (sw==5) 
+            return true
+        else
+            return false;
+        
+    }
+    function left() {
+        if (pagina-1>=0) {
+           pag(pagina-1);
+           
+       }
     }
     function pag(params) {
-        body.innerHTML=screen[params]+paginator(params);
+         
+        pagina=params;
+         document.getElementById('enunciado').innerHTML=statements[pagina];
+         document.getElementById('preguntas').innerHTML=questions[pagina];
+         document.getElementById('paginator').innerHTML=paginator(params);
+         
+       
+        
     }
     function paginator(params) {
         let check='';
         let paginator=`
+        <div class="d-flex justify-content-center">
+            <nav class=" center" aria-label="...">
+                <ul class="pagination">
+                  <li class="page-item  "  onclick="left()">
+                    <a href="#" class="page-link endlist"   tabindex="-1"  aria-disabled="true"> <strong>Anterior</strong></a>
+                  </li>
+                  <li class="page-item pointer  ${check=params==0?'active':''} " onclick="pag(0)"><a class="page-link">1</a></li>
+                  <li class="page-item pointer  ${check=params==1?'active':''}"  onclick="pag(1)" aria-current="page">
+                    <a class="page-link"  >2 <span class="sr-only">(current)</span></a>
+                  </li>
+                  
+                <li class="page-item pointer  ${check=params==2?'active':''}"  onclick="pag(2)"><a class="page-link"  >3</a></li>
+                <li class="page-item  pointer ${check=params==3?'active':''}"  onclick="pag(3)"><a class="page-link"  >4</a></li>
+                <li class="page-item pointer  ${check=params==4?'active':''}"  onclick="pag(4)"><a class="page-link" >5</a></li>
+   
+                <li class="page-item "  onclick="right()">
+                    <a href="#" class="page-link endlist" > <Strong>Siguiente </Strong> </a>
+                  </li>
+                </ul>
+              </nav>
+        </div>
            
-           <div class="d-flex justify-content-center">
-                  <nav  class=" center" aria-label="...">
-                      <ul class="pagination">
-                        <li class="page-item disabled">
-                          <button class="page-link"  >anterior</button>
-                        </li>
-                        <li class="page-item ${check=params==0?'active':''}"><a class="page-link"  onclick="pag(0)">1</a></li>
-                        <li class="page-item ${check=params==1?'active':''}" aria-current="page">
-                          <a class="page-link" onclick="pag(1)">2 <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="page-item ${check=params==2?'active':''}" ><a class="page-link"  onclick="pag(2)">3</a></li>
-                        <li class="page-item ${check=params==3?'active':''}" ><a class="page-link"  onclick="pag(3)">4</a></li>
-                        <li class="page-item ${check=params==4?'active':''}"><a class="page-link"  onclick="pag(4)">5</a></li>
-                        <li class="page-item">
-                          <button class="page-link"   >siguiente</button>
-                    
-                        </li>
-                      </ul>
-                    </nav>
-              </div>
          
                       
                       `;
                       return paginator;
     }
+  
+ $("#preguntas").on( "click", ".perguntas .list-group .list-group-item .custom-control.custom-radio [type=radio]",function () {
+    document.getElementById('progre');
+    questions[pagina].replace("checked","");
+    prueba=this;
+    questions[pagina]=questions[pagina].replace(prueba.outerHTML,(prueba.outerHTML.replace(">", " checked>")));
+  
+     
+        console.log(questions[pagina] )
+     puntaje[pagina]=parseFloat( this.value);
+    
+     
+     
+
+    if (saved[pagina]==false) {
+        p+=20;
+     var progreso=`
+    <div class="progress perguntas">
+            <div class="progress-bar bg-warning" role="progressbar" style="width: ${p}%;" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100">${p}%</div>
+          </div>
+    
+    `;
+    progre.innerHTML=progreso;
+    saved[pagina]=true; 
+    }
+   
+});
+listar();
+    
+ 
+ 
+ 
+
   
 </script>
 </body>

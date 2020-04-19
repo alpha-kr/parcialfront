@@ -11,6 +11,11 @@
   .color1{
     color: #ffc107 !important;
   }
+  .endlist{
+    color: rgba(0,0,0,.5);
+        color: white !important;
+    background-color: #333333 !important ;
+  }
   .color2{
     color: white;
   }
@@ -48,3 +53,7 @@ border:#ffc107 ;
   background-color: #fff;
   border: 1px solid #dee2e6;
 }
+.pointer{
+  cursor: pointer !important;
+}
+ 

@@ -80,6 +80,7 @@
                     <button class="btn btn-warning btn-block text-white"
                         type="submit">Iniciar Sesión </button>
                 </div>
+                <div id="error"></div>
                 <a class="already" href="recoverPassword.html">
                     Olvidaste tu contraseña? haz click aqui.
                 </a>
@@ -100,12 +101,13 @@
 
 
     <script>
+        var forms;
 
 (function() {
           'use strict';
           window.addEventListener('load', function() {
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            var forms = document.getElementsByClassName('needs-validation');
+            forms = document.getElementsByClassName('needs-validation');
             // Loop over them and prevent submission
             var validation = Array.prototype.filter.call(forms, function(form) {
               form.addEventListener('submit', function(event) {

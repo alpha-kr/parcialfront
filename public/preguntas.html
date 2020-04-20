@@ -194,11 +194,23 @@
            console.log(punt)
 
             alert("su puntaje fue "+punt);
-            firebase.database().ref('usuarios/'+empresa+'/respuestas').set({
+            let done=false;
+            firebase.database.ref('usuarios/'+empresa).once('value',function (snapshot) {
+                if (snapshot.val().respuestas) {
+                    firebase.database().ref('usuarios/'+empresa+'/respuestas').update({
          "operador":userId,
          "respuestas": {"pregunta1":puntaje[0],"pregunta2":puntaje[1],"pregunta3":puntaje[2],"pregunta4":puntaje[3],"pregunta5":puntaje[4]}
 
      });
+                }else{
+                    firebase.database().ref('usuarios/'+empresa+'/respuestas').set({
+         "operador":userId,
+         "respuestas": {"pregunta1":puntaje[0],"pregunta2":puntaje[1],"pregunta3":puntaje[2],"pregunta4":puntaje[3],"pregunta5":puntaje[4]}
+
+     });
+                }
+            })
+            
         }
 
        }

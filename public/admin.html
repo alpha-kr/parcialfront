@@ -11,10 +11,11 @@
     <link rel="stylesheet" href="assets/css/Navigation-with-Button.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/sidebarStyle.css">
+    <link rel="stylesheet" href="assets/css/Registration-Form-with-Photo.css">
 
 </head>
 
-<body>
+<body onload="loadPerfil()">
     <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="background-color: #333333;">
         <div class="container"> <a class="navbar-brand" href="#" style="color: rgba(255,255,255,0.9);"> <img class="img"
                     src="assets/img/worker.png">Test Online&nbsp;</a><button data-toggle="collapse"
@@ -23,54 +24,62 @@
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav mr-auto"></ul><span class="navbar-text actions"> <a
                         class="btn btn-light action-button" role="button" href="#"
-                        style="background-color: #ffc107;">Admin</a> <button onclick="logout()" class="btn btn-light action-button"
-                         role="button" href="#" style="background-color: gray;">Salir</button></span>
+                        style="background-color: #ffc107;">Admin</a> <button onclick="logout()"
+                        class="btn btn-light action-button" role="button" href="#"
+                        style="background-color: gray;">Salir</button></span>
             </div>
         </div>
     </nav>
 
+    <div class="wrapper">
+
+        <!-- sidebar-->
 
 
-    <!-- sidebar-->
-
-
-    <nav id="sidebar">
-        <!-- <div class="img bg-wrap text-center py-4" style="background-image: url(../assets/images/bg_1.jpg);"> -->
-        <div class="user-logo d-flex justify-content-center">
-            <div class="">
-                <div class="img" style="background-image: url(assets/img/meeting.jpg);"></div>
-                <h3>Admin</h3>
+        <nav id="sidebar">
+            <!-- <div class="img bg-wrap text-center py-4" style="background-image: url(../assets/images/bg_1.jpg);"> -->
+            <div class="user-logo d-flex justify-content-center">
+                <div class="">
+                    <div class="img" style="background-image: url(assets/img/meeting.jpg);"></div>
+                    <h3>Admin</h3>
+                </div>
             </div>
+            <!-- </div> -->
+            <ul class="list-unstyled components mb-5">
+                <li style="cursor:pointer">
+                    <a>
+                        Perfil
+                    </a>
+                </li>
+                <li style="cursor:pointer">
+                    <a href="listarOperadores.html">
+                        Operadores
+                    </a>
+                </li>
+                <li style="cursor:pointer">
+                    <a href="cuestionario.html">
+                        Cuestionario
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+
+
+        <!-- hasta aqui-->
+
+
+        <div  class="register-photo container d-flex justify-content-center" style="padding-top: 40px">
+            <form  id="formulario" class="needs-validation" novalidate>
+
+
+            </form>
+            
+            
         </div>
-        <!-- </div> -->
-        <ul class="list-unstyled components mb-5">
-            <li style="cursor:pointer">
-                <a>
-                    Perfil
-                </a>
-            </li>
-            <li style="cursor:pointer">
-                <a href="listarOperadores.html">
-                    Operadores
-                </a>
-            </li>
-            <li style="cursor:pointer">
-                <a href="cuestionario.html">
-                    Cuestionario
-                </a>
-            </li>
-        </ul>
-    </nav>
 
-
-
-    <!-- hasta aqui-->
-
-
-
-
-
-
+    </div>
 
 
 
@@ -99,9 +108,14 @@
                     </div>
                     <div class="col-md-6 item text">
                         <h3>Test online</h3>
-                        <p>Es una empresa encargada de realizar test empresariales, los cuales brindan herramientas coorporativas de alto impacto ayudando a empresas a media el rendimiento de sus empleados.</p>
+                        <p>Es una empresa encargada de realizar test empresariales, los cuales brindan herramientas
+                            coorporativas de alto impacto ayudando a empresas a media el rendimiento de sus empleados.
+                        </p>
                     </div>
-                    <div class="col item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a></div>
+                    <div class="col item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i
+                                class="icon ion-social-twitter"></i></a><a href="#"><i
+                                class="icon ion-social-snapchat"></i></a><a href="#"><i
+                                class="icon ion-social-instagram"></i></a></div>
                 </div>
                 <p class="copyright">Test online © 2020</p>
             </div>
@@ -110,13 +124,15 @@
 
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    
+
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-storage.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/app.js"></script>
-    
+
 </body>
 
 </html>

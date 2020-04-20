@@ -48,6 +48,10 @@ function registrar(evt) {
 
       firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
+          firebase.auth().currentUser.getIdToken().then(function (idToken) {
+            localStorage.auth = idToken;
+            localStorage.uid = firebase.auth().currentUser.uid;
+          });
           var storage = firebase.storage().ref('img/' + firebase.auth().currentUser.uid + '.' + extension);
           storage.put(evt.target[5].files[0]);
           uid = firebase.auth().currentUser.uid;
@@ -244,11 +248,16 @@ function operadores() {
           <div class="card-body ">
               <div class="custom-control custom-radio" style="margin-left: 3px;">
                   <input type="checkbox" ${ check = sw ? 'checked' : ''} onclick="changeStatus(this)" id="${cont}" name="${cont}" class="custom-control-input">
-                  <label class="custom-control-label fondo" for="${cont}">habilitado</label>
+                  <label class="custom-control-label fondo" for="${cont}">Habilitado</label>
               </div>
               <h5 class="card-title text-center text-justify">${childData.Nombre}</h5>
               <p class="card-text text-center text-justify" style="text-overflow: ellipsis;">${childData.direccion} </p>
-          </div>
+                <div class="d-flex justify-content-center">
+                <button id="${childData.UID}" name="${childKey}" onclick="guardarData(this.id,this.name,1)" class="btn btn-warning" style="margin-right: 5px;"> Editar  </button>
+                <button id="${childData.UID}" name="${childKey}" onclick="eliminarOperador(this.id,this.name)" class="btn btn-danger">Eliminar </button>
+                </div>
+              
+              </div>
       </div>
           
           
@@ -306,15 +315,17 @@ function validarPregunta(pregunta) {
       errores.push('pregunta' + pregunta + ' tiene un puntaje vacio');
     }
   }
-
-  console.log(errores);
   return errores;
 }
 
-function preguntas() {
+function preguntas(event) { 
   let errores = [];
   for (let k = 1; k <= 5; k++) {
-    errores.push(validarPregunta(k));
+    let e = validarPregunta(k);
+    if (e.length > 0){
+      errores.push();
+    }
+    
   }
   if (errores.length > 0 ) {
     let Div=document.getElementById('error');
@@ -343,6 +354,7 @@ function preguntas() {
     `;
     Div.innerHTML += stringError;
   } else {
+    // firebase.database().ref('usuarios/' + localStorage.uid + '/cuestionario').remove()
     for (let i = 1; i <= 5; i++) {
       let enunciado = document.getElementById('e' + i).value;
       let preguntasSize = $('#d' + i + ' ul li').length;
@@ -350,17 +362,153 @@ function preguntas() {
         'enunciado': enunciado
       });
       for (let j = 0; j < preguntasSize; j++) {
-        let resp = document.getElementById('p' + i + 'r' + j);
-        let valor = document.getElementById('p' + i + 'v' + j);
+        console.log($('#p' + i + 'r' + j).val());
+        console.log($('#p' + i + 'v' + j).val());
         firebase.database().ref('usuarios/' + localStorage.uid + '/cuestionario/pregunta' + i).push().set({
-          'respuesta': resp.value,
-          'valor': valor.value,
+          'respuesta': $('#p' + i + 'r' + j).val(),
+          'valor': $('#p' + i + 'v' + j).val(),
         });
       }
     }
+    
+
   }
 }
 
+function loadCuestionario() {
+  let vacio = false;
+  firebase.database().ref('usuarios/' + localStorage.uid).on('value', function(snapshot){
+    let cuestionario = snapshot.val().cuestionario;
+    if (cuestionario === null) {
+      vacio = true;
+    }
+    let i = 1;
+    for (const p in cuestionario) {
+      let pregunta = document.getElementById('d' + i);
+        pregunta.innerHTML = ` <label for="exampleInputEmail1">Pregunta numero: ${i}</label>
+        <div class="form-inline">
+
+            <input type="text" id="e${i}" value="${value = vacio? '': cuestionario[''+p+''].enunciado}" placeholder="Ingrese enunciado de la pregunta"
+                class="form-control  "><button class="btn btn-warning" onclick="agregar('p${i}','d${i}')"> agregar opcion<i
+                    class="fas fa-plus"></i></button>
+        </div>
+
+        <small id="emailHelp" class="form-text text-muted">Recuerde uso de una buena ortografia.</small>
+        <ul  id="p${i}" class="list-group">
+         
+        </ul> 
+        
+        `
+        let j = 0;
+        for (const key in cuestionario[''+p+'']) {
+          let respuesta = cuestionario[''+p+''][''+key+''].respuesta;
+          let valor = cuestionario[''+p+''][''+key+''].valor;
+          if(respuesta && valor ){
+
+          
+          var Div=document.getElementById('p'+i);
+            Div.innerHTML+=`
+          
+                <li class="list-group-item" >
+                    <div class="form-inline">
+
+                        <input type="text" id=p${i}r${j} value="${respuesta}" placeholder="Ingrese Opcion de respuesta" class="form-control mr-3  w-65">
+                        <input type="text" id=p${i}v${j} value="${valor}" placeholder="puntaje" class="form-control w-25">
+                        <button class="btn btn-danger ml-3" onclick="quitar(this)"><i class="fas fa-minus-circle"></i></button>
+                    </div>
+
+
+                </li>
+
+
+       
+            
+            `
+            }
+          j += 1;
+        }
+        // console.log(cuestionario[''+ [p] +'']);
+        i += 1;
+    } 
+  });
+}
+
+function recoverPassword() {
+  email = $("#email").val();
+  div = document.getElementById('msg');
+  firebase.auth().sendPasswordResetEmail(email).then(function() {
+    div.innerHTML = '<small> Se ha enviado a tu correo un link para restablecer la contraseña</small>'
+  }).catch(function(error) {
+    // An error happened.
+  });
+
+}
+
+function loadPerfil() {
+  var perfil = document.getElementById('formulario');
+  firebase.database().ref('usuarios/' + localStorage.uid ).once('value', function (snapshot) {
+    
+    respuesta = snapshot.val();
+    perfil.innerHTML = `
+    
+                <h2 class="text-center">${respuesta.Empresa}</h2>
+    
+                <div class="form-group">
+                    <p>Nombre del representante legal:</p>
+                    <p class="form-control"  id="nombreRepLeg" name="nombreRepLeg"> ${respuesta.NombreR} </p>
+                </div>
+
+                <div class="form-group">
+                    <p>Documento: </p>
+                    <p class="form-control"  id="nombreRepLeg" name="nombreRepLeg"> ${respuesta.tipoD}: ${respuesta.documento}</p>
+                </div>
+                <div class="form-group">
+                    <p>Correo: </p>
+                    <p class="form-control"  id="nombreRepLeg" name="nombreRepLeg">${firebase.auth().currentUser.email}</p>
+                </div>
+                <div class="form-group">
+                    <p>Telefono: </p>
+                    <p class="form-control"  id="nombreRepLeg" name="nombreRepLeg">${respuesta.Telefono}</p>
+                </div>
+
+  `
+  });
+
+  let contOp = 0;
+  firebase.database().ref('usuarios/' + localStorage.uid+ '/Operadores').once('value', function (snapshot) {
+    
+    snapshot.forEach(function (childSnapshot) {
+      if (childSnapshot.val() !== 'lista de operadores'){
+        console.log(childSnapshot.val()); 
+        contOp += 1;
+      }
+      
+    });
+    console.log(contOp);
+  }).then(function () {
+    perfil.innerHTML += `
+    <div class="form-group">
+        <p>Cantidad de operadores: </p>
+        <p class="form-control"  id="nombreRepLeg" name="nombreRepLeg">${contOp}</p>
+    </div>
+    
+    `
+  });
+
+}
+
+function eliminarOperador(id, key) {
+  firebase.database().ref('usuarios/' + id).remove()
+  firebase.database().ref('usuarios/' + localStorage.uid + '/Operadores/' + key).remve()
+}
+
+function guardarData(id,key, mode) {
+  if(mode === 1){
+    localStorage.editId = id;
+    localStorage.editKey = key;
+  }
+  localStorage.editMode = mode;
+}
 
 
 // session();

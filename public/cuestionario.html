@@ -16,7 +16,7 @@
 
 </head>
 
-<body>
+<body >
     <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="background-color: #333333;">
         <div class="container">
             <a class="navbar-brand" href="#" style="color: rgba(255,255,255,0.9);">
@@ -29,8 +29,8 @@
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav mr-auto"></ul>
                 <span class="navbar-text actions">
-                    <a onclick="preguntas()" class="btn btn-light action-button" role="button"
-                        style="background-color: #ffc107;">Guardar</a>
+                    <button id="guardarBtn" onclick="preguntas(event)" class="btn btn-light action-button" role="button"
+                        style="background-color: #ffc107;">Guardar</button>
                     <a class="btn btn-light action-button" role="button" href="#" style="background-color: #ffc107;">
                         Admin
                     </a>
@@ -97,7 +97,7 @@
     style="margin-top: 20px;margin-right: 20px; padding: 15px;">
 
     <div class="form-group" id="d1">
-        <label for="exampleInputEmail1">Pregunta numero:1</label>
+        <!-- <label for="exampleInputEmail1">Pregunta numero:1</label>
         <div class="form-inline">
 
             <input type="text" id="e1" placeholder="Ingrese enunciado de la pregunta"
@@ -108,7 +108,7 @@
         <small id="emailHelp" class="form-text text-muted">Recuerde uso de una buena ortografia.</small>
         <ul  id="p1" class="list-group">
          
-        </ul>
+        </ul> -->
 
 
     </div>
@@ -118,7 +118,7 @@
     style="margin-top: 20px;margin-right: 20px; padding: 15px;">
 
     <div class="form-group" id="d2">
-        <label for="exampleInputEmail1">Pregunta numero:2</label>
+         <!--<label for="exampleInputEmail1">Pregunta numero:2</label>
         <div class="form-inline">
 
             <input type="text" id="e2" placeholder="Ingrese enunciado de la pregunta"
@@ -129,7 +129,7 @@
         <small id="emailHelp" class="form-text text-muted">Recuerde uso de una buena ortografia.</small>
         <ul  id="p2" class="list-group">
          
-        </ul>
+        </ul> -->
 
 
     </div>
@@ -139,7 +139,7 @@
     style="margin-top: 20px;margin-right: 20px; padding: 15px;">
 
     <div class="form-group" id="d3">
-        <label for="exampleInputEmail1">Pregunta numero:3</label>
+         <!--<label for="exampleInputEmail1">Pregunta numero:3</label>
         <div class="form-inline">
 
             <input type="text" id="e3" placeholder="Ingrese enunciado de la pregunta"
@@ -150,7 +150,7 @@
         <small id="emailHelp" class="form-text text-muted">Recuerde uso de una buena ortografia.</small>
         <ul  id="p3" class="list-group">
          
-        </ul>
+        </ul> -->
 
 
     </div>
@@ -160,7 +160,7 @@
 style="margin-top: 20px;margin-right: 20px; padding: 15px;">
 
 <div class="form-group" id="d4">
-    <label for="exampleInputEmail1">Pregunta numero:4</label>
+    <!--<label for="exampleInputEmail1">Pregunta numero:4</label>
     <div class="form-inline">
 
         <input type="text" id="e4" placeholder="Ingrese enunciado de la pregunta"
@@ -171,7 +171,7 @@ style="margin-top: 20px;margin-right: 20px; padding: 15px;">
     <small id="emailHelp" class="form-text text-muted">Recuerde uso de una buena ortografia.</small>
     <ul  id="p4" class="list-group">
      
-    </ul>
+    </ul> -->
 
 
 </div>
@@ -181,7 +181,7 @@ style="margin-top: 20px;margin-right: 20px; padding: 15px;">
     style="margin-top: 20px;margin-right: 20px; padding: 15px;">
 
     <div class="form-group" id="d5">
-        <label for="exampleInputEmail1">Pregunta numero:5</label>
+         <!--<label for="exampleInputEmail1">Pregunta numero:5</label>
         <div class="form-inline">
 
             <input type="text" id="e5" placeholder="Ingrese enunciado de la pregunta"
@@ -192,7 +192,7 @@ style="margin-top: 20px;margin-right: 20px; padding: 15px;">
         <small id="emailHelp" class="form-text text-muted">Recuerde uso de una buena ortografia.</small>
         <ul  id="p5" class="list-group">
          
-        </ul>
+        </ul> -->
 
 
     </div>
@@ -257,6 +257,20 @@ style="margin-top: 20px;margin-right: 20px; padding: 15px;">
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-storage.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/app.js"></script>
+    <script>
+        const queryString = window.location.search;
+
+        const urlParams = new URLSearchParams(queryString);
+
+        const page_type = urlParams.get('tipo');
+
+        if(page_type == 0){
+            loadCuestionario();
+        }
+
+        console.log(page_type);
+
+    </script>
     <script>
         function agregar(pregunta,div){
             var Div=document.getElementById(pregunta);

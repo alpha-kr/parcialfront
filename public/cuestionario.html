@@ -258,18 +258,7 @@ style="margin-top: 20px;margin-right: 20px; padding: 15px;">
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/app.js"></script>
     <script>
-        const queryString = window.location.search;
-
-        const urlParams = new URLSearchParams(queryString);
-
-        const page_type = urlParams.get('tipo');
-
-        if(page_type == 0){
             loadCuestionario();
-        }
-
-        console.log(page_type);
-
     </script>
     <script>
         function agregar(pregunta,div){

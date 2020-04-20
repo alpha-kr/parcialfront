@@ -113,6 +113,7 @@ function crearoperadores(evt) {
             firebase.database().ref("usuarios/" + firebase.auth().currentUser.uid).set({
               "Nombre": $("#nombreRepLeg").val(),
               "direccion": $("#direccion").val(),
+              "email": email,
               "tipoUser": false,
               "empresa":localStorage.uid,
               "habilitado": true,
@@ -502,12 +503,176 @@ function eliminarOperador(id, key) {
   firebase.database().ref('usuarios/' + localStorage.uid + '/Operadores/' + key).remve()
 }
 
-function guardarData(id,key, mode) {
-  if(mode === 1){
-    localStorage.editId = id;
-    localStorage.editKey = key;
+function stringForm(titulo,nombre,email,direccion,mode) {
+  let string = '';
+  string += `
+  <h2 class="text-center"><strong>${titulo}&nbsp;</strong>&nbsp;Operador.</h2>
+
+  <div class="form-group"><input required value="${nombre}" class="form-control" type="text" id="nombreRepLeg" name="nombreRepLeg"
+      placeholder="Nombre(s) y apellido(s)">
+      <div class="valid-feedback">
+          
+        </div>
+        <div class="invalid-feedback">
+          debe ingresar nombre y apellido
+        </div>
+  </div>
+  <div class="valid-feedback">
+       
+    </div>
+    <div class="invalid-feedback">
+      Ingrese Nombre y apellido.
+    </div>
+    `
+    if (mode === 0){
+      string += `<div class="form-group"><input  required class="form-control" type="email" id="email" name="nombreRepLeg"
+      placeholder=" ingrese email">
+      <div class="valid-feedback">
+         
+        </div>
+        <div class="invalid-feedback">
+          Ingrese formato de email valido
+        </div>
+      </div> 
+      
+      `
+    }
+  
+  
+
+  string += `<div class="container form-group">
+      <div class="row">
+          <div class="custom-file">
+              <input  ${mode===0? 'required': ''} type="file" accept="image/gif,image/jpeg,image/jpg,image/png"  class="custom-file-input" id="file" lang="es">
+              <label class="custom-file-label form-control" for="customFileLang">Seleccionar </label>
+            </div>
+            
+        `
+
+  
+           
+
+        if (mode === 0) {
+         string += ` <div class="valid-feedback">
+            
+          </div>
+          <div class="invalid-feedback">
+            Debe selecionar un archivo Imagen debe ser formato gif,jpeg ,jpg,png
+          </div>
+          
+          `
+        }
+
+
+
+   string += `  </div>
+
+  </div>
+  <div class="form-group"><input value="${direccion }" required class="form-control" type="text" id="direccion"
+      placeholder="Dirección">
+      <div class="valid-feedback">
+          
+        </div>
+        <div class="invalid-feedback">
+          Debe ingresar direccion
+        </div>
+  </div>
+  
+  ` 
+  
+  
+  
+
+  
+  if (mode === 0) {
+    string += `
+    <div class="form-group"><input required
+    minlength="6"class="form-control" id="password" type="password" name="password"
+       placeholder="Contraseña">
+       <div class="valid-feedback">
+         
+         </div>
+         <div class="invalid-feedback">
+           Debe ingresar Contraseña de minimo 6 caracteres
+         </div>
+</div>
+
+    `
+
   }
+
+  string += `
+  <div class="form-group">
+  <button class="btn btn-warning btn-block text-white"> 
+      ${titulo}
+  </button>
+  </div>
+  
+  ` 
+
+  return string;
+}
+
+function formCrearEditarOperador(){
+  let form = document.getElementById('formulario');
+  let mode = +localStorage.editMode;
+  let string = '';
+  var nombre;
+  var email;
+  var direccion;
+  if (mode === 1){
+    firebase.database().ref("usuarios/" + localStorage.editId).once('value', function (snapshot) {
+      let resultado = snapshot.val();
+      nombre = resultado.Nombre;
+      email = resultado.email;
+      direccion = resultado.direccion;
+
+    }).then(function() {
+
+      form.innerHTML += stringForm('Editar',nombre,email,direccion,1)
+    })
+  } else {
+    form.innerHTML += stringForm('Crear','','','',0);
+  }
+
+}
+
+function actualizarOp(event) {
+  var files = event.target.file;
+  firebase.database().ref('usuarios/' + localStorage.editId).update({
+    "Nombre": $("#nombreRepLeg").val(),
+    "direccion": $("#direccion").val(),
+  });
+
+  firebase.database().ref('usuarios/' + localStorage.uid +'/Operadores/' + localStorage.editKey).update({
+    "Nombre": $("#nombreRepLeg").val(),
+    "direccion": $("#direccion").val(),
+  });
+
+  // actualizar imagen
+  if(files.files[0]){
+    console.log('actualize imagen')
+    let extensionBefore = '';
+    firebase.database().ref('usuarios/' + localStorage.editId).once('value', function(snapshot){
+      extensionBefore = snapshot.val().extension;
+    }).then(function(){
+      firebase.storage().ref('img/' + localStorage.editId + '.' + extensionBefore).delete().then(function() {
+        // File deleted successfully
+        let extension = files.files[0].name.split('.')[1];
+        firebase.storage().ref('img/' + localStorage.editId + '.' + extension).put(files.files[0]);
+      })
+    })
+  }
+
+
+
+}
+
+function guardarData(id,key, mode) {
+  localStorage.editId = id;
+  localStorage.editKey = key;
   localStorage.editMode = mode;
+  window.location="crearEditarOperador.html";
 }
 
 

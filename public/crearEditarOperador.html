@@ -93,79 +93,11 @@
 
         <!-- hasta aqui-->
 
-        <div id="formulario" class="register-photo container d-flex justify-content-center" style="padding-top: 40px">
+        <div class="register-photo container d-flex justify-content-center" style="padding-top: 40px">
 
             
-        <form  class="needs-validation" novalidate>
-            <h2 class="text-center"><strong>Crear&nbsp;</strong>&nbsp;Operador.</h2>
-
-            <div class="form-group"><input required class="form-control" type="text" id="nombreRepLeg" name="nombreRepLeg"
-                placeholder="Nombre(s) y apellido(s)">
-                <div class="valid-feedback">
-                    
-                  </div>
-                  <div class="invalid-feedback">
-                    debe ingresar nombre y apellido
-                  </div>
-            </div>
-            <div class="valid-feedback">
-                 
-              </div>
-              <div class="invalid-feedback">
-                Ingrese Nombre y apellido.
-              </div>
-            <div class="form-group"><input  required class="form-control" type="email" id="email" name="nombreRepLeg"
-                placeholder=" ingrese email">
-                <div class="valid-feedback">
-                   
-                  </div>
-                  <div class="invalid-feedback">
-                    Ingrese formato de email valido
-                  </div>
-            </div>
+        <form id="formulario" class="needs-validation" novalidate>
             
-
-            <div class="container form-group">
-                <div class="row">
-                    <div class="custom-file">
-                        <input  required type="file" accept="image/gif,image/jpeg,image/jpg,image/png"  class="custom-file-input" id="file" lang="es">
-                        <label class="custom-file-label form-control" for="customFileLang">Seleccionar </label>
-                      </div>
-                      <div class="valid-feedback">
-                      
-                      </div>
-                      <div class="invalid-feedback">
-                        Debe selecionar un archivo Imagen debe ser formato gif,jpeg ,jpg,png
-                      </div>
-
-                </div>
-
-            </div>
-            <div class="form-group"><input required class="form-control" type="text" id="direccion"
-                placeholder="Dirección">
-                <div class="valid-feedback">
-                    
-                  </div>
-                  <div class="invalid-feedback">
-                    Debe ingresar direccion
-                  </div>
-            </div>
-            <div class="form-group"><input required
-                 minlength="6"class="form-control" id="password" type="password" name="password"
-                    placeholder="Contraseña">
-                    <div class="valid-feedback">
-                      
-                      </div>
-                      <div class="invalid-feedback">
-                        Debe ingresar Contraseña de minimo 6 caracteres
-                      </div>
-            </div>
-
-            <div class="form-group">
-                <button  class="btn btn-warning btn-block text-white"
-                    type="submit">Crear 
-            </button>
-            </div>
         </form>
     </div>
 
@@ -218,6 +150,7 @@
 <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-storage.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/app.js"></script>
+    <script> formCrearEditarOperador() </script>
     <script>
       $('#file').on('change',function (e) {
         var fileName = e.target.files[0].name;
@@ -239,7 +172,12 @@
                         }else{
                           event.preventDefault();
                           event.stopPropagation();
-                          crearoperadores(event);
+                          console.log(localStorage.editMode);
+                          if (localStorage.editMode === '0') {
+                            crearoperadores(event);
+                          } else {
+                            actualizarOp(event);
+                          }
                           form.classList.add('was-validated');
         
                         }

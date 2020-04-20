@@ -114,6 +114,7 @@ function crearoperadores(evt) {
               "Nombre": $("#nombreRepLeg").val(),
               "direccion": $("#direccion").val(),
               "tipoUser": false,
+              "empresa":localStorage.uid,
               "habilitado": true,
               "extension": extension
             }).then(function () {
@@ -197,7 +198,7 @@ function iniciarSesion() {
               Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'No estas habilitado para responder el cuestionario',
+                text: 'No estas habilitado para responder el cuestionario, dirijase con el administrador',
               })
             }
 
@@ -325,7 +326,6 @@ function preguntas(event) {
     if (e.length > 0){
       errores.push();
     }
-    
   }
   if (errores.length > 0 ) {
     let Div=document.getElementById('error');

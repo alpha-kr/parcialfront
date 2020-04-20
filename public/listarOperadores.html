@@ -45,6 +45,19 @@
 
 
     <div class="wrapper">
+        <div data-delay="1500" class="toast" style="position: absolute; top: 0; right: 0;">
+            <div class="toast-header">
+              <img src="assets/img/worker.png" style="width:20px; height: 20px;" class="rounded mr-2  w-10" alt="...">
+              <strong class="mr-auto">Operador Agregado</strong>
+              <small> succes 1 seg ago</small>
+              <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="toast-body">
+              Se agrego operado con exito.
+            </div>
+          </div>
 
 
         <!-- sidebar-->
@@ -91,6 +104,25 @@
                  
             </div>
         </div>
+        <div class="modal" id="exampleModal"  tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="mtitle">Resultado del operador</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body ">
+                  <p id="mbody">.</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" onclick="eliminarRes()" style="background-color: #ffc107; border-color:#ffc107;" class="btn btn-primary">Eliminar Resultado</button>
+                  <button type="button" class="btn btn-secondary"   data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
 
     </div>
@@ -149,7 +181,9 @@
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-storage.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/app.js"></script>
-    <script> operadores()</script>
+    <script> 
+     var idselected='';
+     operadores()</script>
 </body>
 
 </html>

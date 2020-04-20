@@ -22,8 +22,9 @@
         <div class="container"> <a class="navbar-brand" href="#" style="color: rgba(255,255,255,0.9);"> <img class="img" src="assets/img/worker.png">Test Online&nbsp;</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div
                 class="collapse navbar-collapse" id="navcol-1">
-                <ul class="nav navbar-nav mr-auto"></ul><span class="navbar-text actions"> <a class="btn btn-light action-button" role="button" href="#" style="background-color: #ffc107;">Operador numero #</a> <a class="btn btn-light action-button" href="index.html" role="button" href="#" style="background-color: gray;">Salir</a></span></div>
-        </div>
+                hola
+                        
+            </div>
     </nav>
  
     <div id="body" class="container main center">
@@ -94,6 +95,8 @@
     var empresa;
     var saved=[false,false,false,false,false];
     var puntaje=[0,0,0,0,0];
+    var name=''
+ 
      
      var userId=localStorage.uid;
      var questions=[];
@@ -109,14 +112,18 @@
     function listar() {
         firebase.database().ref('usuarios/' + userId).on('value', function (snapshot) {
          empresa=snapshot.val().empresa;
+         name=snapshot.val().Nombre
+         $('#navcol-1').html(`
+    <ul class="nav navbar-nav mr-auto"></ul><span class="navbar-text actions"> <a class="btn btn-light action-button" role="button" href="#" style="background-color: #ffc107;">${name} #</a> <a class="btn btn-light action-button" href="index.html" role="button" href="#" style="background-color: gray;">Salir</a></span></div>
+
+    `)
        
        firebase.database().ref('usuarios/'+empresa).on('value',function (snapshot){
            
             if (snapshot.val().cuestionario) {
                 var cuestionario=snapshot.val().cuestionario;
                 
-                console.log(cuestionario.pregunta2);
-                console.log();
+                 
                 for (const pregunta in cuestionario) {
                    
                     let enu=`
@@ -195,16 +202,17 @@
 
             alert("su puntaje fue "+punt);
             let done=false;
-            firebase.database.ref('usuarios/'+empresa).once('value',function (snapshot) {
-                if (snapshot.val().respuestas) {
-                    firebase.database().ref('usuarios/'+empresa+'/respuestas').update({
-         "operador":userId,
+            firebase.database().ref('usuarios/'+userId+'/respuestas/').once('value',function (snapshot) {
+                console.log(snapshot)
+                if (snapshot!=null) {
+                    firebase.database().ref('usuarios/'+userId+'/cuestionario').update({
+       
          "respuestas": {"pregunta1":puntaje[0],"pregunta2":puntaje[1],"pregunta3":puntaje[2],"pregunta4":puntaje[3],"pregunta5":puntaje[4]}
 
      });
                 }else{
-                    firebase.database().ref('usuarios/'+empresa+'/respuestas').set({
-         "operador":userId,
+                    firebase.database().ref('usuarios/'+userId+'/cuestionario').set({
+          
          "respuestas": {"pregunta1":puntaje[0],"pregunta2":puntaje[1],"pregunta3":puntaje[2],"pregunta4":puntaje[3],"pregunta5":puntaje[4]}
 
      });

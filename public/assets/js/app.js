@@ -251,10 +251,13 @@ function operadores() {
         let check = '';
         let extension = '';
         let src = '';
+        let cuestionario
         firebase.database().ref("usuarios/" + childData.UID).once('value', function (snapshot) {
           sw = snapshot.val().habilitado;
           extension = snapshot.val().extension;
           console.log(extension);
+          cuestionariobtn='';
+          cuestionario=(snapshot.val().cuestionario!=null)?true:false;
 
         }).then(function () {
           firebase.storage().ref('img/').child(childData.UID + '.' + extension).getDownloadURL().then(function (url) {
@@ -272,8 +275,11 @@ function operadores() {
               <h5 class="card-title text-center text-justify">${childData.Nombre}</h5>
               <p class="card-text text-center text-justify" style="text-overflow: ellipsis;">${childData.direccion} </p>
                 <div class="d-flex justify-content-center">
+
                 <button id="${childData.UID}" name="${childKey}" onclick="guardarData(this.id,this.name,1)" class="btn btn-warning" style="margin-right: 5px;"> Editar  </button>
-                <button id="${childData.UID}" name="${childKey}" onclick="eliminarOperador(this.id,this.name)" class="btn btn-danger">Eliminar </button>
+                <button id="${childData.UID}" name="${childKey}" onclick="eliminarOperador(this.id,this.name)" style="margin-right: 5px;" class="btn btn-danger">Eliminar </button>
+                ${cuestionariobtn=  cuestionario?`<button id="${childData.UID}" name="${childKey}" onclick="openmodal(this.id, '${childData.Nombre}')" style="margin-right: 5px;" class="btn btn-secondary" style="margin-right: 5px;"> cuestionario  </button>`
+                :''}
                 </div>
               
               </div>
@@ -526,6 +532,30 @@ function guardarData(id,key, mode) {
     localStorage.editKey = key;
   }
   localStorage.editMode = mode;
+}
+function openmodal(id ,name) {
+  let puntaje=0;
+  let puntajes;
+  idselected=id;
+   
+  firebase.database().ref('usuarios/'+id+'/cuestionario/respuestas').once( 'value', function (snapshot) {
+    puntaje =snapshot.val().pregunta1+ snapshot.val().pregunta2+snapshot.val().pregunta3+snapshot.val().pregunta4+snapshot.val().pregunta5
+    puntajes=snapshot.val();
+  })
+  .then(function () {
+    $('#mbody').text(`su puntaje fue ${puntaje}`);
+    $('#mtitle').text(`Operador:  ${name}`)
+    $('#exampleModal').modal('show')
+  })
+
+}
+function eliminarRes() {
+  firebase.database().ref('usuarios/'+idselected+'/cuestionario').remove();
+  $('#exampleModal').modal('hide')
+  $('.toast').toast('show');
+  window.setInterval(function () {
+    window.location = "listarOperadores.html";
+  }, 2300);
 }
 
 

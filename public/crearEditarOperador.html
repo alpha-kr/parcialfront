@@ -219,6 +219,11 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/app.js"></script>
     <script>
+      $('#file').on('change',function (e) {
+        var fileName = e.target.files[0].name;
+        $('#file + label').html(fileName);
+
+      });
 
         (function() {
                   'use strict';

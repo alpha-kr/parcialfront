@@ -174,41 +174,59 @@ function crearoperadores(evt) {
 function iniciarSesion() {
   email = $("#email").val();
   password = $("#password").val();
-  firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
+  firebase.auth().signInWithEmailAndPassword(email, password)
+  .then( function () {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        firebase.auth().currentUser.getIdToken().then(function (idToken) {
+          localStorage.auth = idToken;
+          localStorage.uid = firebase.auth().currentUser.uid;
+        });
+  
+        firebase.database().ref('usuarios/' + firebase.auth().currentUser.uid)
+          .on('value', function (snapshot) {
+            const resp = snapshot.val()
+            if (resp.tipoUser) {
+              window.location = "admin.html";
+            } else {
+              if (resp.habilitado) {
+                window.location = "preguntas.html";
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'No estas habilitado para responder el cuestionario, dirijase con el administrador',
+                })
+              }
+  
+            }
+          });
+  
+  
+      }
+    });
+  
+  })
+  
+  .catch(function (error) {
     var errorCode = error.code;
     var errorMessage = error.message;
+    console.log(error.message)
+    let div = document.getElementById('error');
+    $('#password').val("");
+    $('#email').val("");
+      div.innerHTML=`
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Operador!</strong> Credenciales invalidas.
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+      `;
+    
 
   });
-  firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-      firebase.auth().currentUser.getIdToken().then(function (idToken) {
-        localStorage.auth = idToken;
-        localStorage.uid = firebase.auth().currentUser.uid;
-      });
-
-      firebase.database().ref('usuarios/' + firebase.auth().currentUser.uid)
-        .on('value', function (snapshot) {
-          const resp = snapshot.val()
-          if (resp.tipoUser) {
-            window.location = "admin.html";
-          } else {
-            if (resp.habilitado) {
-              window.location = "preguntas.html";
-            } else {
-              Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'No estas habilitado para responder el cuestionario, dirijase con el administrador',
-              })
-            }
-
-          }
-        });
-
-
-    }
-  });
-}
+ }
 
 function logout(params) {
   firebase.auth().signOut().then(function () {
@@ -377,7 +395,7 @@ function preguntas(event) {
 
 function loadCuestionario() {
   let vacio = false;
-  firebase.database().ref('usuarios/' + localStorage.uid).on('value', function(snapshot){
+  firebase.database().ref('usuarios/' + localStorage.uid).once('value', function(snapshot){
     let cuestionario = snapshot.val().cuestionario;
     if (cuestionario === null) {
       vacio = true;

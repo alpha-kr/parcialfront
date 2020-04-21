@@ -20,6 +20,9 @@
   .color2{
     color: white;
   }
+  .color3{
+    color: green;
+  }
   .scrollable-menu {
     height: auto;
     max-height: 200px;

@@ -190,17 +190,28 @@
         return 1;
     }
    
-     function right() {
+     function right(button) {
        if (pagina+1<5) {
            pag(pagina+1);
            
        }else{
-           if (acabo()){
           
+            
+           if (acabo()){
+            pagina++
            puntaje.forEach(value=>{(punt+=value)});
-           console.log(punt)
+           
 
-            alert("su puntaje fue "+punt);
+             $('#body').html(`
+             <div class="center">
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                  <h1 class="display-4 color3"> Test Finalizado</h1>
+                  <p class="lead">su resultado fue: ${punt}</p>
+                </div>
+              </div>          
+
+        </div>  `);
             let done=false;
             firebase.database().ref('usuarios/'+userId+'/respuestas/').once('value',function (snapshot) {
                 console.log(snapshot)
@@ -254,12 +265,16 @@
        }
     }
     function pag(params) {
-         
-        pagina=params;
+         if (pagina<=4) {
+            pagina=params;
          document.getElementById('enunciado').innerHTML=statements[pagina];
          document.getElementById('preguntas').innerHTML=questions[pagina];
          document.getElementById('paginator').innerHTML=paginator(params);
-         
+         }
+       
+         if (params==4) {
+             $('#sig').text('Finalizar');
+         } 
        
         
     }
@@ -281,8 +296,8 @@
                 <li class="page-item  pointer ${check=params==3?'active':''}"  onclick="pag(3)"><a class="page-link"  >4</a></li>
                 <li class="page-item pointer  ${check=params==4?'active':''}"  onclick="pag(4)"><a class="page-link" >5</a></li>
    
-                <li class="page-item "  onclick="right()">
-                    <a href="#" class="page-link endlist" > <Strong>Siguiente </Strong> </a>
+                <li class="page-item "  onclick="right(this)">
+                    <a href="#" class="page-link endlist" > <Strong id="sig">Siguiente </Strong> </a>
                   </li>
                 </ul>
               </nav>

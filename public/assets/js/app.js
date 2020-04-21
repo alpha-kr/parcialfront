@@ -440,16 +440,34 @@ function preguntas(event) {
       let preguntasSize = $('#d' + i + ' ul li').length;
       firebase.database().ref('usuarios/' + localStorage.uid + '/cuestionario/pregunta' + i).set({
         'enunciado': enunciado
-      });
+      })
       for (let j = 0; j < preguntasSize; j++) {
         console.log($('#p' + i + 'r' + j).val());
         console.log($('#p' + i + 'v' + j).val());
         firebase.database().ref('usuarios/' + localStorage.uid + '/cuestionario/pregunta' + i).push().set({
           'respuesta': $('#p' + i + 'r' + j).val(),
           'valor': $('#p' + i + 'v' + j).val(),
-        });
+        })
       }
     }
+    
+      $('.wrapper').prepend(`
+      <div id="cuestio" data-delay="1500" class="toast" style="position: absolute; top: 0; right: 0;">
+      <div class="toast-header">
+        <img src="assets/img/worker.png" style="width:20px; height: 20px;" class="rounded mr-2  w-10" alt="...">
+        <strong class="mr-auto">operacion exitosa</strong>
+        <small> hace 1 segundo</small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="toast-body">
+        Se agrego cuestionario con exito.
+      </div>
+    </div>
+      `)
+      $('#cuestio').toast('show');
+       
     
 
   }

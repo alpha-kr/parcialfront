@@ -18,35 +18,43 @@ if (localStorage.empresa=true) {
 
   var notificacion = firebase.database().ref('usuarios/'+localStorage.uid+'/respuestas/');
   notificacion.on('child_added', function(data) {
-    console.log(data)
-  crearnotificacion( data.key, data.val().Operador, data.val().puntaje);
+    console.log(data.val())
+    $('#historial').prepend(`<a class="dropdown-item" href="#">Operador:${data.val().Operador}  <br>ya realizo el test <br> Fecha:${data.val().fecha }</a> <div class="dropdown-divider"></div>`);
 
+    if (data.val().visto==false) {
+      crearnotificacion( data.key, data.val().Operador, data.val().puntaje, data.val().fecha );
+
+    }
+ 
 });
  
 }
-function crearnotificacion(key , operador , puntaje , twice=false) {
-  console.log("entro")
+function crearnotificacion(key , operador , puntaje , fecha) {
+ 
+   ref=firebase.database().ref('usuarios/'+localStorage.uid+'/respuestas/'+key);
+  ref.update( {
+   visto:true
+ });
   var timestamp = new Date().getUTCMilliseconds();
-  console.log(timestamp);
+   
   let toast=`
-   <div id="${timestamp}" data-delay="1900" id="noti" class="toast" style="position: absolute; top: 0; right: 0;">
-            <div class="toast-header">
-              <img src="assets/img/worker.png" style="width:20px; height: 20px;" class="rounded mr-2  w-10" alt="...">
-              <strong class="mr-auto"> Test realizado</strong>
-              <small>hace 1 segundo;</small>
-              <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true"></span>
-              </button>
-            </div>
-            <div class="toast-body">
-            operador:${operador}<br>
-              su puntaje fue:${puntaje} 
-            </div>
-          </div>
+  <div id="${timestamp}" data-delay="1900"  class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div  class="toast-header">
+      <img src="assets/img/worker.png" style="width:20px; height: 20px;" class="rounded mr-2  w-10" alt="...">   
+      <strong class="mr-auto">Test realizado</strong>
+        <small class="text-muted">hace 1 segundo</small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="toast-body">
+         Operdador ${operador} realizo el test con puntaje ${puntaje}
+      </div>
+    </div>
+   
    
    `
-  
-  $('.wrapper').prepend(toast);
+    $('#toasts').prepend(toast);
   $('#'+timestamp).toast('show');
 
 

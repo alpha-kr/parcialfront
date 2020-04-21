@@ -29,14 +29,13 @@
                         class="btn btn-light action-button" role="button" href="#"
                         style="background-color: #ffc107;">Admin</a> 
                       
-                        <div class="dropdown" style="display:inline-flexbox;">
+                        <div class="dropdown "  >
                             <a class="btn btn-light action-button dropdown-toggle"  style="background-color: #ffc107;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell"></i>
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <a class="dropdown-item" href="#">Action</a>
-                              <a class="dropdown-item" href="#">Another action</a>
-                              <a class="dropdown-item" href="#">Something else here</a>
+                            <div id="historial" class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButton">
+                               
+                              
                             </div>
                         </div>
                         
@@ -51,7 +50,16 @@
 
         <!-- sidebar-->
         
-
+       
+            <!-- Position it -->
+            <div id="toasts" style="position: absolute; top: 0; right: 0; min-height: 200px;">
+          
+              <!-- Then put toasts within -->
+              
+          
+              
+            </div>
+           
 
         <nav id="sidebar">
             <!-- <div class="img bg-wrap text-center py-4" style="background-image: url(../assets/images/bg_1.jpg);"> -->
@@ -140,8 +148,6 @@
     </div>
 
     <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>

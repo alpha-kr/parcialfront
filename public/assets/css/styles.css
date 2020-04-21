@@ -20,6 +20,11 @@
   .color2{
     color: white;
   }
+  .scrollable-menu {
+    height: auto;
+    max-height: 200px;
+     
+}
   a.color2:hover{
  color: white !important;
   }

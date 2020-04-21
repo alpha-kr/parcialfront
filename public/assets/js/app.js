@@ -13,7 +13,12 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
-var arrayOp = [];
+var arrayOp = [];{}
+$('#file').on('change',function (e) {
+  var fileName = e.target.files[0].name;
+  $('#file + label').html(fileName);
+
+});
 if (localStorage.empresa=true) {
 
   var notificacion = firebase.database().ref('usuarios/'+localStorage.uid+'/respuestas/');
@@ -467,9 +472,6 @@ function preguntas(event) {
     </div>
       `)
       $('#cuestio').toast('show');
-       
-    
-
   }
 }
 
@@ -477,7 +479,7 @@ function loadCuestionario() {
   let vacio = false;
   firebase.database().ref('usuarios/' + localStorage.uid).once('value', function(snapshot){
     let cuestionario = snapshot.val().cuestionario;
-    if (cuestionario === null) {
+    if (cuestionario == null) {
       vacio = true;
     }
     let i = 1;
@@ -597,7 +599,7 @@ function loadPerfil() {
 
 function eliminarOperador(id, key) {
   firebase.database().ref('usuarios/' + id).remove()
-  firebase.database().ref('usuarios/' + localStorage.uid + '/Operadores/' + key).remve()
+  firebase.database().ref('usuarios/' + localStorage.uid + '/Operadores/' + key).remove()
 }
 
 function stringForm(titulo,nombre,email,direccion,mode) {
@@ -790,8 +792,23 @@ function openmodal(id ,name) {
 function eliminarRes() {
   firebase.database().ref('usuarios/'+idselected+'/cuestionario').remove();
   $('#exampleModal').modal('hide')
+  let toast=`<div data-delay="1500"  id="toast2" class="toast" style="position: absolute; top: 0; right: 0;">
+  <div class="toast-header">
+    <img src="assets/img/worker.png" style="width:20px; height: 20px;" class="rounded mr-2  w-10" alt="...">
+    <strong class="mr-auto">respuesta  eliminada 2</strong>
+    <small> succes 1 seg ago</small>
+    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="toast-body">
+    Se elimino cuestionario con exito.
+  </div>
+</div>`
+$('.wrapper').prepend(toast);
   $('#toast2').toast('show');
   window.setInterval(function () {
+
     window.location = "listarOperadores.html";
   }, 2300);
 }

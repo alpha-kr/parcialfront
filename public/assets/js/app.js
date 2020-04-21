@@ -113,6 +113,8 @@ function registrar(evt) {
             "documento": $("#numDoc").val(),
             "tipoD": $("#tipoD").val(),
             "Operadores": "lista de operadores",
+            "extension": extension,
+            "email": email,
             "tipoUser": true,
           });
         }
@@ -774,6 +776,104 @@ function eliminarRes() {
   window.setInterval(function () {
     window.location = "listarOperadores.html";
   }, 2300);
+}
+
+
+function cargarGraficas() {
+  let mybackgroundColor = [
+    'rgba(255, 99, 132, 0.2)',
+    'rgba(54, 162, 235, 0.2)',
+    'rgba(255, 206, 86, 0.2)',
+    'rgba(75, 192, 192, 0.2)',
+    'rgba(153, 102, 255, 0.2)',
+  ];
+  let myborderColor = [
+    'rgba(255, 99, 132, 1)',
+    'rgba(54, 162, 235, 1)',
+    'rgba(255, 206, 86, 1)',
+    'rgba(75, 192, 192, 1)',
+    'rgba(153, 102, 255, 1)',
+  ];
+
+  let nombreLabel = [];
+  let dataOp = [];
+  let cont = 0;
+  let allAnswers=[];
+  let body = document.getElementById('body');
+  firebase.database().ref('usuarios/' + localStorage.uid).once('value', function (snapshot) {
+    let respuestas = snapshot.val().respuestas;
+    for (const r in respuestas) {
+      firebase.database().ref('usuarios/' + r).once('value', function (snapshot2) {
+        let resp = snapshot2.val();
+        nombreLabel.push(resp.Nombre);
+        body.innerHTML += `
+          <div style="width:400px;height:400px; margin-right: 15px;margin-top:15px">
+            <canvas id="${cont}" ></canvas>
+          </div>
+        `
+        for (const key in resp.cuestionario.respuestas) {
+          dataOp.push(resp.cuestionario.respuestas['' + key + '']);
+        }
+        allAnswers.push(dataOp);
+        cont += 1;
+      }).then(function () {
+        for (let i = 0; i < cont; i++) {
+          let ctx = document.getElementById('' + i);
+          var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: ['pregunta 1', 'pregunta 2', 'pregunta 3', 'pregunta 4', 'pregunta 5'],
+              datasets: [{
+                label: nombreLabel[i], // nombres operadores
+                data: allAnswers[i], // valor respuestas
+                backgroundColor: mybackgroundColor,
+                borderColor: mybackgroundColor,
+                borderWidth: 1
+              }]
+            },
+            options: {
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+              }
+            }
+          });
+    
+        }
+      })
+
+    }
+  })
+}
+
+function loadInfoSideBar() {
+  let email;
+  let extension;
+  let adminDiv = document.getElementById('adminInfo');
+  firebase.database().ref('usuarios/' + localStorage.uid).once('value',function(snapshot){
+    let respuesta = snapshot.val();
+    console.log(respuesta);
+    email = respuesta.email;
+    extension = respuesta.extension;
+  }).then(function() {
+    console.log(email);
+    console.log(extension);
+    firebase.storage().ref('img/').child(localStorage.uid + '.' + extension).getDownloadURL().then(function (url) {
+      console.log(url)
+      src = "'" + url + "'";
+      adminDiv.innerHTML += `
+          <div class="">
+              <div class="img" style="background-image: url(${src});"></div>
+              <small>${email}</small>
+          </div>
+      
+      
+          `
+    });
+  });
 }
 
 

@@ -29,10 +29,8 @@
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav mr-auto"></ul>
                 <span class="navbar-text actions">
-                    <a class="btn btn-light action-button" role="button" href="#" style="background-color: #ffc107;">
-                        Admin
-                    </a>
-                    <a class="btn btn-light action-button" href="index.html" role="button" href="#"
+                    
+                    <a class="btn btn-light action-button" onclick="logout()" role="button"
                         style="background-color: gray;">
                         Salir
                     </a>
@@ -63,16 +61,13 @@
 
         <nav id="sidebar">
             <!-- <div class="img bg-wrap text-center py-4" style="background-image: url(../assets/images/bg_1.jpg);"> -->
-            <div class="user-logo d-flex justify-content-center">
-                <div class="">
-                    <div class="img" style="background-image: url(assets/img/meeting.jpg);"></div>
-                    <h3>Admin</h3>
+                <div id="adminInfo" class="user-logo d-flex justify-content-center">
+                
                 </div>
-            </div>
             <!-- </div> -->
             <ul class="list-unstyled components mb-5">
                 <li style="cursor:pointer">
-                    <a>
+                    <a href="admin.html">
                         Perfil
                     </a>
                 </li>
@@ -151,6 +146,7 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/app.js"></script>
     <script> formCrearEditarOperador() </script>
+    <script>loadInfoSideBar()</script>
     <script>
       $('#file').on('change',function (e) {
         var fileName = e.target.files[0].name;

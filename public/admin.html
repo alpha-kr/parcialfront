@@ -25,9 +25,7 @@
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav mr-auto"></ul>
                 <span class="navbar-text actions"> 
-                    <a
-                        class="btn btn-light action-button" role="button" href="#"
-                        style="background-color: #ffc107;">Admin</a> 
+                    
                       
                         <div class="dropdown "  >
                             <a class="btn btn-light action-button dropdown-toggle"  style="background-color: #ffc107;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -63,16 +61,13 @@
 
         <nav id="sidebar">
             <!-- <div class="img bg-wrap text-center py-4" style="background-image: url(../assets/images/bg_1.jpg);"> -->
-            <div class="user-logo d-flex justify-content-center">
-                <div class="">
-                    <div class="img" style="background-image: url(assets/img/meeting.jpg);"></div>
-                    <h3>Admin</h3>
-                </div>
+            <div id="adminInfo" class="user-logo d-flex justify-content-center">
+                
             </div>
             <!-- </div> -->
             <ul class="list-unstyled components mb-5">
                 <li style="cursor:pointer">
-                    <a>
+                    <a href="admin.html">
                         Perfil
                     </a>
                 </li>
@@ -155,6 +150,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-storage.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/app.js"></script>
+    <script>loadInfoSideBar()</script>
 
 </body>
 

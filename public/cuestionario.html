@@ -31,10 +31,8 @@
                 <span class="navbar-text actions">
                     <button id="guardarBtn" onclick="preguntas(event)" class="btn btn-light action-button" role="button"
                         style="background-color: #ffc107;">Guardar</button>
-                    <a class="btn btn-light action-button" role="button" href="#" style="background-color: #ffc107;">
-                        Admin
-                    </a>
-                    <a class="btn btn-light action-button" href="index.html" role="button" href="#"
+                    
+                    <a class="btn btn-light action-button" onclick="logout()" role="button" href="#"
                         style="background-color: gray;">
                         Salir
                     </a>
@@ -52,16 +50,13 @@
 
         <nav id="sidebar">
             <!-- <div class="img bg-wrap text-center py-4" style="background-image: url(../assets/images/bg_1.jpg);"> -->
-            <div class="user-logo d-flex justify-content-center">
-                <div class="">
-                    <div class="img" style="background-image: url(assets/img/meeting.jpg);"></div>
-                    <h3>Administrador</h3>
+                <div id="adminInfo" class="user-logo d-flex justify-content-center">
+                
                 </div>
-            </div>
             <!-- </div> -->
             <ul class="list-unstyled components mb-5">
                 <li style="cursor:pointer">
-                    <a>
+                    <a href="admin.html">
                         Perfil
                     </a>
                 </li>
@@ -260,6 +255,7 @@ style="margin-top: 20px;margin-right: 20px; padding: 15px;">
     <script>
             loadCuestionario();
     </script>
+    <script>loadInfoSideBar()</script>
     <script>
         function agregar(pregunta,div){
             var Div=document.getElementById(pregunta);

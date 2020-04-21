@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>preguntas</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/Footer-Dark.css">
+    <link rel="stylesheet" href="assets/css/Navigation-with-Button.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/sidebarStyle.css">
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="background-color: #333333;">
+        <div class="container">
+            <a class="navbar-brand" href="#" style="color: rgba(255,255,255,0.9);">
+                <img class="img" src="assets/img/worker.png">Test Online&nbsp;
+            </a>
+            <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="nav navbar-nav mr-auto"></ul>
+                <span class="navbar-text actions">
+                    <a class="btn btn-light action-button" onclick="logout()" role="button"
+                        style="background-color: gray;">
+                        Salir
+                    </a>
+                </span>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <div class="wrapper">
+        <!-- sidebar-->
+
+
+        <nav id="sidebar">
+            <!-- <div class="img bg-wrap text-center py-4" style="background-image: url(../assets/images/bg_1.jpg);"> -->
+                <div id="adminInfo" class="user-logo d-flex justify-content-center">
+                
+                </div>
+            <!-- </div> -->
+            <ul class="list-unstyled components mb-5">
+                <li style="cursor:pointer">
+                    <a href="admin.html">
+                        Perfil
+                    </a>
+                </li>
+                <li style="cursor:pointer">
+                    <a href="listarOperadores.html">
+                        Operadores
+                    </a>
+                </li>
+                <li style="cursor:pointer">
+                    <a href="cuestionario.html">
+                        Cuestionario
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+
+        <!-- hasta aqui-->
+
+        <div class="container">
+            <div  id="body" class="row d-flex justify-content-center" style="flex: wrap;height: 100vh">
+                <!-- <div style="width:400px;height:400px">
+                    <canvas id="0" ></canvas>
+                </div> -->
+                  
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+ 
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-storage.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script> cargarGraficas()</script>
+    <script>loadInfoSideBar()</script>
+</body>
+
+</html>

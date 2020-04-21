@@ -14,6 +14,48 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
 var arrayOp = [];
+if (localStorage.empresa=true) {
+
+  var notificacion = firebase.database().ref('usuarios/'+localStorage.uid+'/respuestas/');
+  notificacion.on('child_added', function(data) {
+    console.log(data)
+  crearnotificacion( data.key, data.val().Operador, data.val().puntaje);
+
+});
+ 
+}
+function crearnotificacion(key , operador , puntaje , twice=false) {
+  console.log("entro")
+  var timestamp = new Date().getUTCMilliseconds();
+  console.log(timestamp);
+  let toast=`
+   <div id="${timestamp}" data-delay="1900" id="noti" class="toast" style="position: absolute; top: 0; right: 0;">
+            <div class="toast-header">
+              <img src="assets/img/worker.png" style="width:20px; height: 20px;" class="rounded mr-2  w-10" alt="...">
+              <strong class="mr-auto"> Test realizado</strong>
+              <small>hace 1 segundo;</small>
+              <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="toast-body">
+            operador:${operador}<br>
+              su puntaje fue:${puntaje} 
+            </div>
+          </div>
+   
+   `
+  
+  $('.wrapper').prepend(toast);
+  $('#'+timestamp).toast('show');
+
+
+
+
+
+
+}
+
 
 function registrar(evt) {
   email = $("#email").val();
@@ -187,10 +229,13 @@ function iniciarSesion() {
         firebase.database().ref('usuarios/' + firebase.auth().currentUser.uid)
           .on('value', function (snapshot) {
             const resp = snapshot.val()
+            
             if (resp.tipoUser) {
+              localStorage.empresa=true;
               window.location = "admin.html";
             } else {
               if (resp.habilitado) {
+                localStorage.empresa=true;
                 window.location = "preguntas.html";
               } else {
                 Swal.fire({
@@ -717,7 +762,7 @@ function openmodal(id ,name) {
 function eliminarRes() {
   firebase.database().ref('usuarios/'+idselected+'/cuestionario').remove();
   $('#exampleModal').modal('hide')
-  $('.toast').toast('show');
+  $('#toast2').toast('show');
   window.setInterval(function () {
     window.location = "listarOperadores.html";
   }, 2300);

@@ -87,7 +87,7 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/app.js"></script>
 <script>
- 
+     var  punt=0.0;
     var p=0;
     var prueba;
     var body=document.getElementById('body');
@@ -196,7 +196,7 @@
            
        }else{
            if (acabo()){
-           let  punt=0.0
+          
            puntaje.forEach(value=>{(punt+=value)});
            console.log(punt)
 
@@ -216,7 +216,15 @@
          "respuestas": {"pregunta1":puntaje[0],"pregunta2":puntaje[1],"pregunta3":puntaje[2],"pregunta4":puntaje[3],"pregunta5":puntaje[4]}
 
      });
+     
+
                 }
+                firebase.database().ref('usuarios/'+empresa+'/respuestas/'+userId).set({
+          
+          "Operador": name,
+          "puntaje":punt, 
+          "fecha:":Date(Date.now)
+      });
             })
             
         }

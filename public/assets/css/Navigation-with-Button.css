@@ -15,6 +15,9 @@
     padding-bottom: 1rem;
   }
 }
+.collapse .navbar-collapse span{
+  display: flex !important;
+}
 
 .navigation-clean-button .navbar-brand {
   font-weight: bold;
@@ -207,5 +210,8 @@
 
 [type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled) {
   color: #ffffff;
+}
+.navbar-text.actions{
+display: flex !important;
 }
 

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/sidebarStyle.css">
     <link rel="stylesheet" href="assets/css/Registration-Form-with-Photo.css">
+    <script src="https://kit.fontawesome.com/dbfbdd77b7.js" crossorigin="anonymous"></script>
 
 </head>
 
@@ -22,9 +23,24 @@
                 class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
                     class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="nav navbar-nav mr-auto"></ul><span class="navbar-text actions"> <a
+                <ul class="nav navbar-nav mr-auto"></ul>
+                <span class="navbar-text actions"> 
+                    <a
                         class="btn btn-light action-button" role="button" href="#"
-                        style="background-color: #ffc107;">Admin</a> <button onclick="logout()"
+                        style="background-color: #ffc107;">Admin</a> 
+                      
+                        <div class="dropdown" style="display:inline-flexbox;">
+                            <a class="btn btn-light action-button dropdown-toggle"  style="background-color: #ffc107;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-bell"></i>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                              <a class="dropdown-item" href="#">Action</a>
+                              <a class="dropdown-item" href="#">Another action</a>
+                              <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                        
+                        <button onclick="logout()"
                         class="btn btn-light action-button" role="button" href="#"
                         style="background-color: gray;">Salir</button></span>
             </div>
@@ -34,6 +50,7 @@
     <div class="wrapper">
 
         <!-- sidebar-->
+        
 
 
         <nav id="sidebar">

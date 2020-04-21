@@ -25,7 +25,9 @@
   }
   .scrollable-menu {
     height: auto;
-    max-height: 200px;
+    max-height: 250px;
+     
+    overflow-x: hidden;
      
 }
   a.color2:hover{

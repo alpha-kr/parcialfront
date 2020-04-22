@@ -475,20 +475,12 @@ function preguntas(event) {
   }
 }
 
-function loadCuestionario() {
-  let vacio = false;
-  firebase.database().ref('usuarios/' + localStorage.uid).once('value', function(snapshot){
-    let cuestionario = snapshot.val().cuestionario;
-    if (cuestionario == null) {
-      vacio = true;
-    }
-    let i = 1;
-    for (const p in cuestionario) {
-      let pregunta = document.getElementById('d' + i);
+function stringCuestionarioEnunciado(cad,i) {
+        let pregunta = document.getElementById('d' + i);
         pregunta.innerHTML = ` <label for="exampleInputEmail1">Pregunta numero: ${i}</label>
         <div class="form-inline">
 
-            <input type="text" id="e${i}" value="${value = vacio? '': cuestionario[''+p+''].enunciado}" placeholder="Ingrese enunciado de la pregunta"
+            <input type="text" id="e${i}" value="${cad}" placeholder="Ingrese enunciado de la pregunta"
                 class="form-control  "><button class="btn btn-warning" onclick="agregar('p${i}','d${i}')"> agregar opcion<i
                     class="fas fa-plus"></i></button>
         </div>
@@ -499,6 +491,20 @@ function loadCuestionario() {
         </ul> 
         
         `
+}
+
+function loadCuestionario() {
+  let vacio = false;
+  firebase.database().ref('usuarios/' + localStorage.uid).once('value', function(snapshot){
+    let cuestionario = snapshot.val().cuestionario;
+    if (cuestionario == null) {
+      for (let k = 1; k <= 5; k++) {
+        stringCuestionarioEnunciado('',k);  
+      }
+    } else {
+      let i = 1;
+    for (const p in cuestionario) {
+        stringCuestionarioEnunciado(cuestionario[''+p+''].enunciado,i); 
         let j = 0;
         for (const key in cuestionario[''+p+'']) {
           let respuesta = cuestionario[''+p+''][''+key+''].respuesta;
@@ -530,6 +536,8 @@ function loadCuestionario() {
         // console.log(cuestionario[''+ [p] +'']);
         i += 1;
     } 
+    }
+    
   });
 }
 

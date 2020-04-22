@@ -409,7 +409,7 @@ function preguntas(event) {
   for (let k = 1; k <= 5; k++) {
     let e = validarPregunta(k);
     if (e.length > 0){
-      errores.push();
+      errores.push(e);
     }
   }
   if (errores.length > 0 ) {
@@ -608,6 +608,7 @@ function loadPerfil() {
 function eliminarOperador(id, key) {
   firebase.database().ref('usuarios/' + id).remove()
   firebase.database().ref('usuarios/' + localStorage.uid + '/Operadores/' + key).remove()
+  window.location="listarOperadores.html"
 }
 
 function stringForm(titulo,nombre,email,direccion,mode) {
